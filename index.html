@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back Nine Golf Email Signature Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 15px; padding: 10px; background-color: #99CA3C; border: none; color: white; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #88B92E; }
+        .signature-box { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h2>Back Nine Golf Email Signature Generator</h2>
+    <p>Fill in your details below to generate your email signature.</p>
+
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="John Doe">
+
+    <label for="title">Job Title</label>
+    <input type="text" id="title" placeholder="Creative Director">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="your.email@thebackninegolf.com">
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" placeholder="(123) 456-7890">
+
+    <label for="image">Profile Image URL</label>
+    <input type="url" id="image" placeholder="https://your-image-link.com">
+
+    <button onclick="generateSignature()">Generate Signature</button>
+
+    <div class="signature-box" id="signature-box" style="display: none;">
+        <h3>Your Email Signature:</h3>
+        <textarea id="signature-output" rows="8" style="width: 100%;"></textarea>
+        <button onclick="copySignature()">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        function generateSignature() {
+            const name = document.getElementById("name").value;
+            const title = document.getElementById("title").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const image = document.getElementById("image").value || "https://iili.io/2yOuSp4.png";
+
+            const signatureHTML = `
+                <table style="width:100%; max-width:500px; font-family: Arial, sans-serif; border-collapse: collapse;">
+                    <tr>
+                        <td style="width: 120px; padding: 10px 20px 10px 0; vertical-align: middle;">
+                            <img src="${image}" alt="${name}" width="143" height="143" style="border-radius: 50%;">
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 20px; border-left: 2px solid #99CA3C;">
+                            <p style="margin: 0; font-size: 18px; font-weight: 600; color: #333;">${name}</p>
+                            <p style="margin: 0; font-size: 14px; color: #666;">${title}</p>
+                            <table style="margin-top: 10px;">
+                                <tr>
+                                    <td><img src="https://cdn-icons-png.flaticon.com/16/646/646094.png" width="16"></td>
+                                    <td><a href="mailto:${email}" style="color: #666; text-decoration: none;">${email}</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="https://cdn-icons-png.flaticon.com/16/1006/1006771.png" width="16"></td>
+                                    <td><a href="https://thebackninegolf.com" style="color: #666; text-decoration: none;">thebackninegolf.com</a></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="https://cdn-icons-png.flaticon.com/16/159/159832.png" width="16"></td>
+                                    <td><a href="tel:${phone}" style="color: #666; text-decoration: none;">${phone}</a></td>
+                                </tr>
+                            </table>
+                            <p style="margin-top: 10px;">
+                                <a href="https://www.facebook.com/indoorgolfstudio" target="_blank">
+                                    <img src="https://img1.gimm.io/assets/social/96/native/13/facebook.png" width="24" height="24" style="margin-right: 8px;">
+                                </a>
+                                <a href="https://www.youtube.com/@thebackninegolf" target="_blank">
+                                    <img src="https://img1.gimm.io/assets/social/96/native/13/youtube.png" width="24" height="24" style="margin-right: 8px;">
+                                </a>
+                                <a href="https://www.linkedin.com/company/backninegolf/" target="_blank">
+                                    <img src="https://img1.gimm.io/assets/social/96/native/13/linkedin.png" width="24" height="24" style="margin-right: 8px;">
+                                </a>
+                                <a href="https://www.instagram.com/thebackninegolf/" target="_blank">
+                                    <img src="https://img1.gimm.io/assets/social/96/native/13/instagram.png" width="24" height="24">
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            `;
+            document.getElementById("signature-output").value = signatureHTML;
+            document.getElementById("signature-box").style.display = "block";
+        }
+
+        function copySignature() {
+            const signatureText = document.getElementById("signature-output");
+            signatureText.select();
+            document.execCommand("copy");
+            alert("Signature copied to clipboard! Paste it into Gmail settings.");
+        }
+    </script>
+</body>
+</html>
