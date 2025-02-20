@@ -12,7 +12,8 @@
         button:hover { background-color: #88B92E; }
         a { text-decoration: none; color: #000; }
         .social-icons a img { display: inline-block; vertical-align: middle; }
-        .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; }
+        .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
+        .hidden-copy { position: absolute; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden; }
     </style>
 </head>
 <body>
@@ -38,7 +39,6 @@
     <input type="text" id="address" placeholder="123 Backnine, Saint George, UT 84770">
 
     <label for="image">Profile Image</label>
-    <input type="file" id="imageUpload" accept="image/*">
     <input type="url" id="image" placeholder="https://iili.io/2yOuSp4.png">
     
     <div class="btn-group">
@@ -52,8 +52,8 @@
     </div>
     <button onclick="copySignature()">Copy Signature</button>
 
-    <!-- Hidden div for correct copy-paste formatting -->
-    <div id="hidden-copy" contenteditable="true" style="position: absolute; left: -9999px;"></div>
+    <!-- Hidden div for correct copy-paste -->
+    <div id="hidden-copy" class="hidden-copy" contenteditable="true"></div>
 
     <script>
         function getInputValue(id) {
@@ -120,14 +120,16 @@
             document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
 
-            // Properly copy content as HTML, not raw code
-            document.getElementById("hidden-copy").innerHTML = signatureHTML;
+            // Copy to hidden contentEditable div
+            const hiddenCopy = document.getElementById("hidden-copy");
+            hiddenCopy.innerHTML = signatureHTML;
         }
 
         function copySignature() {
             const copyDiv = document.getElementById("hidden-copy");
+            copyDiv.contentEditable = "true";
             const range = document.createRange();
-            range.selectNode(copyDiv);
+            range.selectNodeContents(copyDiv);
             window.getSelection().removeAllRanges();
             window.getSelection().addRange(range);
             document.execCommand("copy");
