@@ -55,6 +55,9 @@
     </div>
     <button onclick="copySignature()">Copy Signature</button>
 
+    <!-- Hidden contentEditable div for rich-text copying -->
+    <div id="hidden-copy" contenteditable="true" style="position: absolute; left: -9999px;"></div>
+
     <script>
         function generateSignature() {
             const name = document.getElementById("name").value;
@@ -70,7 +73,7 @@
             if (website) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/3917/3917538.png'></td><td>${website}</td></tr>`;
             
             let signatureHTML = `
-                <div contenteditable="true" id="copy-area" style="display: flex; align-items: center; border-radius: 6px; border: 1px solid #ddd; background: #fff; padding: 10px; text-align: left;">
+                <div style="display: flex; align-items: center; border-radius: 6px; border: 1px solid #ddd; background: #fff; padding: 10px; text-align: left;">
                     <div style="padding-right: 12px;">
                         <img src='${image}' alt='Profile Image' style="border-radius: 50%; width: 120px; height: 120px;">
                     </div>
@@ -87,38 +90,29 @@
             document.getElementById("preview-box").style.display = "block";
         }
 
-        async function copySignature() {
-            const previewHTML = document.getElementById("signature-preview").innerHTML;
+        function copySignature() {
+            const preview = document.getElementById("signature-preview");
 
-            if (!previewHTML) {
+            if (!preview.innerHTML.trim()) {
                 alert("Please generate your signature first.");
                 return;
             }
 
-            try {
-                // Create a temporary hidden div to hold the signature
-                const tempContainer = document.createElement("div");
-                tempContainer.contentEditable = "true";
-                tempContainer.style.position = "absolute";
-                tempContainer.style.left = "-9999px";
-                tempContainer.innerHTML = previewHTML;
-                document.body.appendChild(tempContainer);
+            // Copy rendered content to a hidden div
+            const hiddenDiv = document.getElementById("hidden-copy");
+            hiddenDiv.innerHTML = preview.innerHTML;
 
-                // Select and copy the content
-                const range = document.createRange();
-                range.selectNodeContents(tempContainer);
-                const selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
+            // Select and copy from the hidden div
+            const range = document.createRange();
+            range.selectNodeContents(hiddenDiv);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
 
-                // Use clipboard API if supported
-                await navigator.clipboard.writeText(tempContainer.innerHTML);
+            // Execute copy command
+            document.execCommand("copy");
 
-                alert("Signature copied! Paste it into Gmail's signature settings.");
-                document.body.removeChild(tempContainer);
-            } catch (err) {
-                console.error("Failed to copy signature: ", err);
-            }
+            alert("Signature copied! Paste it into Gmail's signature settings.");
         }
 
         function resetForm() {
