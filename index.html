@@ -14,6 +14,25 @@
         .social-icons a img { display: block; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
         #hidden-copy { position: absolute; left: -9999px; top: 0; }
+        .instructions {
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            background: #f4f4f4;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .instructions h3 {
+            color: #2d2d2d;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
@@ -21,7 +40,7 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="Your Name">
+    <input type="text" id="name" placeholder="Your name">
 
     <label for="title">Job Title</label>
     <input type="text" id="title" placeholder="Your Title">
@@ -52,6 +71,24 @@
     </div>
     <button onclick="copySignature()">Copy Signature</button>
 
+    <!-- Styled Instructions -->
+    <div class="instructions">
+        <h3>📌 How to Add Your Signature to Gmail</h3>
+        <p>Follow these steps to copy your signature and set it up in Gmail:</p>
+        <ol>
+            <li><strong>Click "Copy Signature"</strong> to copy your email signature.</li>
+            <li>Go to <strong>Gmail Settings</strong> (⚙️ Gear icon in the top right).</li>
+            <li>Select <strong>"See all settings"</strong> and go to the <strong>"General" tab</strong>.</li>
+            <li>Scroll down to the <strong>"Signature" section</strong>.</li>
+            <li>Click <strong>"Create New"</strong> and enter a name for your signature.</li>
+            <li>Right-click in the signature box and select <strong>"Paste"</strong> (or press <strong>Ctrl + V</strong> on Windows / <strong>Cmd + V</strong> on Mac).</li>
+            <li>Ensure your signature appears correctly, with images and links.</li>
+            <li>Set your signature as default for new emails and replies (optional).</li>
+            <li>Scroll down and click <strong>"Save Changes"</strong>.</li>
+        </ol>
+        <p>✅ Your new Back Nine Golf signature is now ready to use in Gmail!</p>
+    </div>
+
     <!-- Hidden div for correct copy-paste -->
     <div id="hidden-copy" contenteditable="true"></div>
 
@@ -81,25 +118,6 @@
                     <td style="padding-left: 12px;">${address}</td></tr>
             `;
 
-            let socialIcons = `
-                <tr>
-                    <td colspan="2" style="padding-top: 10px; text-align: right;" class="social-icons">
-                        <a href="https://www.facebook.com/indoorgolfstudio" target="_blank">
-                            <img src="https://cdn-icons-png.flaticon.com/128/6422/6422199.png" width="16" height="16">
-                        </a>
-                        <a href="https://www.instagram.com/thebackninegolf/" target="_blank">
-                            <img src="https://cdn-icons-png.flaticon.com/128/6422/6422200.png" width="16" height="16">
-                        </a>
-                        <a href="https://www.youtube.com/@thebackninegolf" target="_blank">
-                            <img src="https://cdn-icons-png.flaticon.com/128/6422/6422215.png" width="16" height="16">
-                        </a>
-                        <a href="https://www.linkedin.com/company/backninegolf/" target="_blank">
-                            <img src="https://cdn-icons-png.flaticon.com/128/6422/6422202.png" width="16" height="16">
-                        </a>
-                    </td>
-                </tr>
-            `;
-
             let signatureHTML = `
                 <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; background-color: transparent;">
                     <tr>
@@ -107,11 +125,10 @@
                             <img src='${image}' alt='Profile Image' style="border-radius: 50%; max-width: 400px; display: block; margin: auto;">
                         </td>
                         <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
-                            <p style="font-size: 18px; font-weight: bold; margin: 0;">${name}</p>
+                            <p style="font-size: 17px; font-weight: bold; margin: 0;">${name}</p>
                             <p style="font-size: 15px; margin: 2px 0; line-height: 1.5;">${title}</p>
                             <table style="width: 100%; border-spacing: 0px; border-collapse: collapse;">
                                 ${contactInfo}
-                                ${socialIcons}
                             </table>
                         </td>
                     </tr>
@@ -119,21 +136,7 @@
 
             document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
-
-            // Properly copy to hidden div for Gmail compatibility
-            const hiddenCopy = document.getElementById("hidden-copy");
-            hiddenCopy.innerHTML = signatureHTML;
-        }
-
-        function copySignature() {
-            const copyDiv = document.getElementById("hidden-copy");
-            copyDiv.contentEditable = "true";
-            const range = document.createRange();
-            range.selectNodeContents(copyDiv);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            alert("Signature copied! Paste it into Gmail.");
+            document.getElementById("hidden-copy").innerHTML = signatureHTML;
         }
     </script>
 </body>
