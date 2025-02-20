@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Back Nine Golf Email Signature Generator</title>
     <style>
-        body { font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; text-align: center; background-color: #f4f4f4; }
+        body { font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; text-align: center; background-color: transparent; }
         label { display: block; margin-top: 4px; font-weight: bold; text-align: left; font-size: 13px; }
         input { width: 100%; padding: 5px; margin-top: 2px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
@@ -17,16 +17,16 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="Jared Uyehara">
+    <input type="text" id="name" placeholder="Minerva Uyehara">
 
     <label for="title">Job Title</label>
     <input type="text" id="title" placeholder="Creative Director">
 
     <label for="email">Email</label>
-    <input type="email" id="email" placeholder="jared.uyehara@thebackninegolf.com">
+    <input type="email" id="email" placeholder="minervuye@gmail.com">
 
     <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" placeholder="435-879-1433">
+    <input type="tel" id="phone" placeholder="808-679-9019">
     
     <label for="website">Website</label>
     <input type="url" id="website" value="https://thebackninegolf.com">
@@ -54,63 +54,4 @@
             const name = document.getElementById("name").value;
             const title = document.getElementById("title").value;
             const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
-            const website = document.getElementById("website").value;
-            let image = document.getElementById("image").value || "https://iili.io/2yOuSp4.png";
-            
-            let contactInfo = "";
-            if (email) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/3916/3916611.png'></td><td>${email}</td></tr>`;
-            if (phone) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/8034/8034760.png'></td><td>${phone}</td></tr>`;
-            if (website) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/3917/3917538.png'></td><td>${website}</td></tr>`;
-            
-            let signatureHTML = `
-                <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; width: 100px; height: 100px;">
-                        </td>
-                        <td style="padding: 10px; border-left: 2px solid #99CA3C;">
-                            <p style="font-size: 17px; font-weight: 650; margin: 0;">${name}</p>
-                            <p style="font-size: 15px; margin: 2px 0;">${title}</p>
-                            <table style="width: 100%; border-spacing: 0px; border-collapse: collapse;">
-                                ${contactInfo}
-                            </table>
-                        </td>
-                    </tr>
-                </table>`;
-
-            document.getElementById("signature-preview").innerHTML = signatureHTML;
-            document.getElementById("preview-box").style.display = "block";
-        }
-
-        function copySignature() {
-            const preview = document.getElementById("signature-preview");
-
-            if (!preview.innerHTML.trim()) {
-                alert("Please generate your signature first.");
-                return;
-            }
-
-            // Copy rendered content to a hidden div
-            const hiddenDiv = document.getElementById("hidden-copy");
-            hiddenDiv.innerHTML = preview.innerHTML;
-
-            // Select and copy from the hidden div
-            const range = document.createRange();
-            range.selectNodeContents(hiddenDiv);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-
-            // Execute copy command
-            document.execCommand("copy");
-
-            alert("Signature copied! Paste it into Gmail's signature settings.");
-        }
-
-        function resetForm() {
-            document.getElementById("preview-box").style.display = "none";
-        }
-    </script>
-</body>
-</html>
+            const
