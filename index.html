@@ -10,10 +10,7 @@
         input { width: 100%; padding: 5px; margin-top: 2px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #88B92E; }
-        .social-icons a { text-decoration: none; display: inline-block; margin: 0 4px; vertical-align: middle; }
-        .social-icons a img { display: block; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
-        #hidden-copy { position: absolute; left: -9999px; top: 0; }
         .instructions {
             margin-top: 20px;
             text-align: left;
@@ -40,13 +37,13 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="Your name">
+    <input type="text" id="name" placeholder="Jared Uyehara">
 
     <label for="title">Job Title</label>
-    <input type="text" id="title" placeholder="Your Title">
+    <input type="text" id="title" placeholder="Creative Director">
 
     <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" placeholder="(123)456-758">
+    <input type="tel" id="phone" placeholder="123 456 758">
     
     <label for="email">Email</label>
     <input type="email" id="email" placeholder="name@thebackninegolf.com">
@@ -88,9 +85,6 @@
         </ol>
         <p>✅ Your new Back Nine Golf signature is now ready to use in Gmail!</p>
     </div>
-
-    <!-- Hidden div for correct copy-paste -->
-    <div id="hidden-copy" contenteditable="true"></div>
 
     <script>
         function getInputValue(id) {
@@ -136,7 +130,20 @@
 
             document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
-            document.getElementById("hidden-copy").innerHTML = signatureHTML;
+
+            // Ensure copy works correctly
+            const hiddenCopy = document.createElement("div");
+            hiddenCopy.contentEditable = "true";
+            document.body.appendChild(hiddenCopy);
+            hiddenCopy.innerHTML = signatureHTML;
+
+            const range = document.createRange();
+            range.selectNodeContents(hiddenCopy);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand("copy");
+            document.body.removeChild(hiddenCopy);
         }
     </script>
 </body>
