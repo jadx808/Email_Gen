@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Back Nine Golf Email Signature Generator</title>
     <style>
-        body { font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; text-align: center; background-color: transparent; }
+        body { font-family: 'Inter', Arial, sans-serif; max-width: 400px; margin: auto; padding: 20px; text-align: center; background-color: transparent; }
         label { display: block; margin-top: 4px; font-weight: bold; text-align: left; font-size: 13px; }
         input { width: 100%; padding: 5px; margin-top: 2px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #88B92E; }
+        a { text-decoration: none; color: #000; }
+        .social-icons a img { display: inline-block; vertical-align: middle; }
     </style>
 </head>
 <body>
@@ -58,20 +60,24 @@
             const title = document.getElementById("title").value || "Creative Director";
             const phone = document.getElementById("phone").value || "123 456 758";
             const email = document.getElementById("email").value || "name@thebackninegolf.com";
-            const website = document.getElementById("website").value || "thebackninegolf.com";
+            const website = document.getElementById("website").value || "https://thebackninegolf.com";
             const address = document.getElementById("address").value || "123 Backnine, Saint George, UT 84770";
             let image = document.getElementById("image").value || "https://iili.io/2yOuSp4.png";
 
             let contactInfo = `
-                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3917/3917144.png' width="16" height="16"></td><td style="padding-left: 12px;">${phone}</td></tr>
-                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3916/3916632.png' width="16" height="16"></td><td style="padding-left: 12px;">${email}</td></tr>
-                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3917/3917571.png' width="16" height="16"></td><td style="padding-left: 12px;">${website}</td></tr>
-                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3916/3916874.png' width="16" height="16"></td><td style="padding-left: 12px;">${address}</td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3917/3917144.png' width="16" height="16"></td>
+                    <td style="padding-left: 12px;"><a href="tel:${phone}">${phone}</a></td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3916/3916632.png' width="16" height="16"></td>
+                    <td style="padding-left: 12px;"><a href="mailto:${email}">${email}</a></td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3917/3917571.png' width="16" height="16"></td>
+                    <td style="padding-left: 12px;"><a href="${website}" target="_blank">${website}</a></td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3916/3916874.png' width="16" height="16"></td>
+                    <td style="padding-left: 12px;">${address}</td></tr>
             `;
 
             let socialIcons = `
                 <tr>
-                    <td colspan="2" style="padding-top: 10px; text-align: right;">
+                    <td colspan="2" style="padding-top: 10px; text-align: right;" class="social-icons">
                         <a href="https://www.facebook.com/indoorgolfstudio" target="_blank">
                             <img src="https://cdn-icons-png.flaticon.com/128/6422/6422199.png" width="16" height="16">
                         </a>
@@ -106,37 +112,7 @@
                 </table>`;
 
             document.getElementById("signature-preview").innerHTML = signatureHTML;
-            document.getElementById("preview-box").style.display = "block"; // Ensure preview box is visible
-        }
-
-        function copySignature() {
-            const preview = document.getElementById("signature-preview");
-
-            if (!preview.innerHTML.trim()) {
-                alert("Please generate your signature first.");
-                return;
-            }
-
-            // Copy rendered content to a hidden div
-            const hiddenDiv = document.getElementById("hidden-copy");
-            hiddenDiv.innerHTML = preview.innerHTML;
-
-            // Select and copy from the hidden div
-            const range = document.createRange();
-            range.selectNodeContents(hiddenDiv);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-
-            // Execute copy command
-            document.execCommand("copy");
-
-            alert("Signature copied! Paste it into Gmail's signature settings.");
-        }
-
-        function resetForm() {
-            document.getElementById("preview-box").style.display = "none";
-            document.getElementById("signature-preview").innerHTML = "";
+            document.getElementById("preview-box").style.display = "block";
         }
     </script>
 </body>
