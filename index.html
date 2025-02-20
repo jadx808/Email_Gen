@@ -12,6 +12,7 @@
         button:hover { background-color: #88B92E; }
         a { text-decoration: none; color: #000; }
         .social-icons a img { display: inline-block; vertical-align: middle; }
+        .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; }
     </style>
 </head>
 <body>
@@ -46,12 +47,12 @@
     </div>
 
     <h3>Signature Preview:</h3>
-    <div id="preview-box" style="display: none; padding: 10px; border: 1px solid #ddd; text-align: left;">
+    <div id="preview-box" class="signature-box" style="display: none;">
         <div id="signature-preview"></div>
     </div>
     <button onclick="copySignature()">Copy Signature</button>
 
-    <!-- Hidden contentEditable div for rich-text copying -->
+    <!-- Hidden contentEditable div for copying -->
     <div id="hidden-copy" contenteditable="true" style="position: absolute; left: -9999px;"></div>
 
     <script>
@@ -113,6 +114,9 @@
 
             document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
+
+            // Ensure copied HTML retains full formatting
+            document.getElementById("hidden-copy").innerHTML = signatureHTML;
         }
     </script>
 </body>
