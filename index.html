@@ -17,19 +17,22 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="name" placeholder="Jared Uyehara">
 
     <label for="title">Job Title</label>
-    <input type="text" id="title" placeholder="Title">
+    <input type="text" id="title" placeholder="Creative Director">
 
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" placeholder="123 456 758">
+    
     <label for="email">Email</label>
     <input type="email" id="email" placeholder="name@thebackninegolf.com">
 
-    <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" placeholder="808-679-9019">
-    
     <label for="website">Website</label>
-    <input type="url" id="website" value="https://thebackninegolf.com">
+    <input type="url" id="website" value="thebackninegolf.com">
+
+    <label for="address">Address</label>
+    <input type="text" id="address" placeholder="123 Backnine, Saint George, UT 84770">
 
     <label for="image">Profile Image</label>
     <input type="file" id="imageUpload" accept="image/*">
@@ -51,29 +54,44 @@
 
     <script>
         function generateSignature() {
-            const name = document.getElementById("name").value || "Your Name";
-            const title = document.getElementById("title").value || "Your Title";
-            const email = document.getElementById("email").value || "namee@thebackninegolf.com";
-            const phone = document.getElementById("phone").value || "808-679-9019";
-            const website = document.getElementById("website").value || "https://thebackninegolf.com";
+            const name = document.getElementById("name").value || "Jared Uyehara";
+            const title = document.getElementById("title").value || "Creative Director";
+            const phone = document.getElementById("phone").value || "123 456 758";
+            const email = document.getElementById("email").value || "name@thebackninegolf.com";
+            const website = document.getElementById("website").value || "thebackninegolf.com";
+            const address = document.getElementById("address").value || "123 Backnine, Saint George, UT 84770";
             let image = document.getElementById("image").value || "https://iili.io/2yOuSp4.png";
-            
-            let contactInfo = "";
-            if (email) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/3916/3916611.png'></td><td style="padding-left: 8px;">${email}</td></tr>`;
-            if (phone) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/8034/8034760.png'></td><td style="padding-left: 8px;">${phone}</td></tr>`;
-            if (website) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/3917/3917538.png'></td><td style="padding-left: 8px;">${website}</td></tr>`;
-            
+
+            let contactInfo = `
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/16/724/724664.png' style='filter: brightness(0) saturate(100%) hue-rotate(80deg);'></td><td style="padding-left: 12px;">${phone}</td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/16/732/732200.png' style='filter: brightness(0) saturate(100%) hue-rotate(80deg);'></td><td style="padding-left: 12px;">${email}</td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/16/2492/2492075.png' style='filter: brightness(0) saturate(100%) hue-rotate(80deg);'></td><td style="padding-left: 12px;">${website}</td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/16/684/684809.png' style='filter: brightness(0) saturate(100%) hue-rotate(80deg);'></td><td style="padding-left: 12px;">${address}</td></tr>
+            `;
+
+            let socialIcons = `
+                <tr>
+                    <td colspan="2" style="padding-top: 10px;">
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/16/733/733547.png" style="margin-right: 8px;"></a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/16/2111/2111463.png" style="margin-right: 8px;"></a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/16/1384/1384060.png" style="margin-right: 8px;"></a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/16/145/145807.png"></a>
+                    </td>
+                </tr>
+            `;
+
             let signatureHTML = `
                 <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; background-color: transparent;">
                     <tr>
                         <td style="padding: 10px;">
-                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; max-width: 100%;">
+                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; max-width: 120px;">
                         </td>
-                        <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 12px; text-align: left;">
+                        <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
                             <p style="font-size: 17px; font-weight: bold; margin: 0;">${name}</p>
                             <p style="font-size: 15px; margin: 2px 0;">${title}</p>
                             <table style="width: 100%; border-spacing: 0px; border-collapse: collapse;">
                                 ${contactInfo}
+                                ${socialIcons}
                             </table>
                         </td>
                     </tr>
