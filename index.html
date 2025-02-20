@@ -1,28 +1,87 @@
-<p>&nbsp;</p>
-<p></p>
-<h2>Back Nine Golf Email Signature</h2>
-<p><label for="name">Full Name:</label> <input id="name" type="text" placeholder="Jared Uyehara" /> <label for="title">Job Title:</label> <input id="title" type="text" placeholder="Creative Director" /> <label for="email">Email:</label> <input id="email" type="email" placeholder="jared.uyehara@thebackninegolf.com" /> <label for="phone">Phone Number:</label> <input id="phone" type="tel" placeholder="435-879-1433" /> <label for="website">Website:</label> <input id="website" type="url" placeholder="https://thebackninegolf.com" /> <label for="image">Profile Image (URL):</label> <input id="image" type="url" placeholder="https://iili.io/2yOuSp4.png" /></p>
-<h3>Signature Preview:</h3>
-<div class="signature-box">
-<div class="signature-left"><img id="preview-image" src="https://iili.io/2yOuSp4.png" alt="Profile Image" width="108" height="108" /></div>
-<div class="signature-right">
-<h3 id="preview-name" class="name">Jared Uyehara</h3>
-<p id="preview-title" class="title">Creative Director</p>
-<table class="info-table" style="width: 312.609px;">
-<tbody>
-<tr>
-<td style="width: 18px;"><img src="https://cdn-icons-png.flaticon.com/16/3916/3916611.png" /></td>
-<td id="preview-email" style="width: 271.609px;">jared.uyehara@thebackninegolf.com</td>
-</tr>
-<tr>
-<td style="width: 18px;"><img src="https://cdn-icons-png.flaticon.com/16/8034/8034760.png" /></td>
-<td id="preview-phone" style="width: 271.609px;">435-879-1433</td>
-</tr>
-<tr>
-<td style="width: 18px;"><img src="https://cdn-icons-png.flaticon.com/16/3917/3917538.png" /></td>
-<td id="preview-website" style="width: 271.609px;">https://thebackninegolf.com</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back Nine Golf Email Signature Generator</title>
+    <style>
+        body { font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; text-align: center; background-color: #f4f4f4; }
+        label { display: block; margin-top: 4px; font-weight: bold; text-align: left; font-size: 13px; }
+        input { width: 100%; padding: 5px; margin-top: 2px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
+        button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
+        button:hover { background-color: #88B92E; }
+        .signature-box { display: flex; align-items: center; border-radius: 6px; border: 1px solid #ddd; background: #fff; padding: 10px; text-align: left; }
+        .signature-left { padding-right: 12px; }
+        .signature-left img { border-radius: 50%; width: 120px; height: 120px; }
+        .signature-right { flex-grow: 1; border-left: 2px solid #99CA3C; padding-left: 16px; }
+        .name { font-size: 17px; font-weight: 650; font-family: 'Poppins', sans-serif; margin-bottom: 0px; padding-bottom: 2px; text-align: left; }
+        .title { font-size: 15px; margin-top: 0px; padding-top: 2px; text-align: left; }
+        .info-table { width: 100%; border-spacing: 0px; margin: 0px; border-collapse: collapse; }
+        .info-table td { vertical-align: middle; padding: 2px 3px; text-align: left; line-height: 16px; font-size: 12px; font-weight: 400; }
+        .info-table img { width: 20px; height: 20px; vertical-align: middle; margin-right: 4px; }
+    </style>
+</head>
+<body>
+    <h2>Back Nine Golf Email Signature Generator</h2>
+    <p>Fill in your details below to generate your email signature.</p>
+    
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="Jared Uyehara">
+
+    <label for="title">Job Title</label>
+    <input type="text" id="title" placeholder="Creative Director">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="jared.uyehara@thebackninegolf.com">
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" placeholder="435-879-1433">
+    
+    <label for="website">Website</label>
+    <input type="url" id="website" value="https://thebackninegolf.com">
+
+    <label for="image">Profile Image</label>
+    <input type="file" id="imageUpload" accept="image/*">
+    <input type="url" id="image" placeholder="https://iili.io/2yOuSp4.png">
+    
+    <div class="btn-group">
+        <button onclick="generateSignature()">Generate Signature</button>
+        <button onclick="resetForm()">Reset</button>
+    </div>
+
+    <h3>Signature Preview:</h3>
+    <div class="signature-box" id="preview-box" style="display: none;">
+        <div id="signature-preview"></div>
+    </div>
+    <button onclick="copySignature()">Copy Signature</button>
+    
+    <script>
+        function generateSignature() {
+            const name = document.getElementById("name").value;
+            const title = document.getElementById("title").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const website = document.getElementById("website").value;
+            let image = document.getElementById("image").value || "https://iili.io/2yOuSp4.png";
+            
+            let contactInfo = "";
+            if (email) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/3916/3916611.png'></td><td>${email}</td></tr>`;
+            if (phone) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/8034/8034760.png'></td><td>${phone}</td></tr>`;
+            if (website) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/3917/3917538.png'></td><td>${website}</td></tr>`;
+            
+            let signatureHTML = `<div class='signature-box'>
+                                    <div class='signature-left'>
+                                        <img src='${image}' alt='Profile Image'>
+                                    </div>
+                                    <div class='signature-right'>
+                                        <p class='name'>${name}</p>
+                                        <p class='title'>${title}</p>
+                                        <table class='info-table'>${contactInfo}</table>
+                                    </div>
+                                </div>`;
+            document.getElementById("signature-preview").innerHTML = signatureHTML;
+            document.getElementById("preview-box").style.display = "block";
+        }
+    </script>
+</body>
+</html>
