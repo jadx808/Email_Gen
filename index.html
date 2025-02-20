@@ -70,7 +70,7 @@
             if (website) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/3917/3917538.png'></td><td>${website}</td></tr>`;
             
             let signatureHTML = `
-                <div style="display: flex; align-items: center; border-radius: 6px; border: 1px solid #ddd; background: #fff; padding: 10px; text-align: left;">
+                <div contenteditable="true" id="copy-area" style="display: flex; align-items: center; border-radius: 6px; border: 1px solid #ddd; background: #fff; padding: 10px; text-align: left;">
                     <div style="padding-right: 12px;">
                         <img src='${image}' alt='Profile Image' style="border-radius: 50%; width: 120px; height: 120px;">
                     </div>
@@ -87,7 +87,7 @@
             document.getElementById("preview-box").style.display = "block";
         }
 
-        function copySignature() {
+        async function copySignature() {
             const previewHTML = document.getElementById("signature-preview").innerHTML;
 
             if (!previewHTML) {
@@ -95,32 +95,33 @@
                 return;
             }
 
-            const tempContainer = document.createElement("div");
-            tempContainer.innerHTML = previewHTML;
-            document.body.appendChild(tempContainer);
-
-            const range = document.createRange();
-            range.selectNodeContents(tempContainer);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-
             try {
-                document.execCommand("copy");
+                // Create a temporary hidden div to hold the signature
+                const tempContainer = document.createElement("div");
+                tempContainer.contentEditable = "true";
+                tempContainer.style.position = "absolute";
+                tempContainer.style.left = "-9999px";
+                tempContainer.innerHTML = previewHTML;
+                document.body.appendChild(tempContainer);
+
+                // Select and copy the content
+                const range = document.createRange();
+                range.selectNodeContents(tempContainer);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+
+                // Use clipboard API if supported
+                await navigator.clipboard.writeText(tempContainer.innerHTML);
+
                 alert("Signature copied! Paste it into Gmail's signature settings.");
+                document.body.removeChild(tempContainer);
             } catch (err) {
                 console.error("Failed to copy signature: ", err);
             }
-
-            document.body.removeChild(tempContainer);
         }
 
         function resetForm() {
-            document.getElementById("name").value = "";
-            document.getElementById("title").value = "";
-            document.getElementById("email").value = "";
-            document.getElementById("phone").value = "";
-            document.getElementById("image").value = "";
             document.getElementById("preview-box").style.display = "none";
         }
     </script>
