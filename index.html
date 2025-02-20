@@ -54,7 +54,7 @@
         <div id="signature-preview"></div>
     </div>
     <button onclick="copySignature()">Copy Signature</button>
-    
+
     <script>
         function generateSignature() {
             const name = document.getElementById("name").value;
@@ -69,18 +69,59 @@
             if (phone) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/8034/8034760.png'></td><td>${phone}</td></tr>`;
             if (website) contactInfo += `<tr><td><img src='https://cdn-icons-png.flaticon.com/16/3917/3917538.png'></td><td>${website}</td></tr>`;
             
-            let signatureHTML = `<div class='signature-box'>
-                                    <div class='signature-left'>
-                                        <img src='${image}' alt='Profile Image'>
-                                    </div>
-                                    <div class='signature-right'>
-                                        <p class='name'>${name}</p>
-                                        <p class='title'>${title}</p>
-                                        <table class='info-table'>${contactInfo}</table>
-                                    </div>
-                                </div>`;
+            let signatureHTML = `
+                <div style="display: flex; align-items: center; border-radius: 6px; border: 1px solid #ddd; background: #fff; padding: 10px; text-align: left;">
+                    <div style="padding-right: 12px;">
+                        <img src='${image}' alt='Profile Image' style="border-radius: 50%; width: 120px; height: 120px;">
+                    </div>
+                    <div style="flex-grow: 1; border-left: 2px solid #99CA3C; padding-left: 16px;">
+                        <p style="font-size: 17px; font-weight: 650; font-family: 'Poppins', sans-serif; margin-bottom: 0px; padding-bottom: 2px; text-align: left;">${name}</p>
+                        <p style="font-size: 15px; margin-top: 0px; padding-top: 2px; text-align: left;">${title}</p>
+                        <table style="width: 100%; border-spacing: 0px; margin: 0px; border-collapse: collapse;">
+                            ${contactInfo}
+                        </table>
+                    </div>
+                </div>`;
+
             document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
+        }
+
+        function copySignature() {
+            const previewHTML = document.getElementById("signature-preview").innerHTML;
+
+            if (!previewHTML) {
+                alert("Please generate your signature first.");
+                return;
+            }
+
+            const tempContainer = document.createElement("div");
+            tempContainer.innerHTML = previewHTML;
+            document.body.appendChild(tempContainer);
+
+            const range = document.createRange();
+            range.selectNodeContents(tempContainer);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            try {
+                document.execCommand("copy");
+                alert("Signature copied! Paste it into Gmail's signature settings.");
+            } catch (err) {
+                console.error("Failed to copy signature: ", err);
+            }
+
+            document.body.removeChild(tempContainer);
+        }
+
+        function resetForm() {
+            document.getElementById("name").value = "";
+            document.getElementById("title").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("image").value = "";
+            document.getElementById("preview-box").style.display = "none";
         }
     </script>
 </body>
