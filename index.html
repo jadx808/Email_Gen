@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Back Nine Golf Email Signature Generator</title>
     <style>
-        body { font-family: 'Inter', Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; text-align: center; background-color: transparent; }
+        body { font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; text-align: center; background-color: transparent; }
         label { display: block; margin-top: 4px; font-weight: bold; text-align: left; font-size: 13px; }
         input { width: 100%; padding: 5px; margin-top: 2px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #88B92E; }
-        a { text-decoration: none; color: #000; }
-        .social-icons a img { display: inline-block; vertical-align: middle; }
+        .social-icons a { text-decoration: none; display: inline-block; margin: 0 4px; vertical-align: middle; }
+        .social-icons a img { display: block; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
-        .hidden-copy { position: absolute; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden; }
     </style>
 </head>
 <body>
@@ -52,8 +51,8 @@
     </div>
     <button onclick="copySignature()">Copy Signature</button>
 
-    <!-- Hidden div for correct copy-paste -->
-    <div id="hidden-copy" class="hidden-copy" contenteditable="true"></div>
+    <!-- Hidden div for proper copy-paste -->
+    <div id="hidden-copy" style="position: absolute; left: -9999px;"></div>
 
     <script>
         function getInputValue(id) {
@@ -119,21 +118,7 @@
 
             document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
-
-            // Copy to hidden contentEditable div
-            const hiddenCopy = document.getElementById("hidden-copy");
-            hiddenCopy.innerHTML = signatureHTML;
-        }
-
-        function copySignature() {
-            const copyDiv = document.getElementById("hidden-copy");
-            copyDiv.contentEditable = "true";
-            const range = document.createRange();
-            range.selectNodeContents(copyDiv);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            alert("Signature copied! Paste it into Gmail.");
+            document.getElementById("hidden-copy").innerHTML = signatureHTML;
         }
     </script>
 </body>
