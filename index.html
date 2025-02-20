@@ -54,8 +54,8 @@
 
     <script>
         function generateSignature() {
-            const name = document.getElementById("name").value || "Jared Uyehara";
-            const title = document.getElementById("title").value || "Creative Director";
+            const name = document.getElementById("name").value || "Your Name";
+            const title = document.getElementById("title").value || "Your Title";
             const phone = document.getElementById("phone").value || "123 456 758";
             const email = document.getElementById("email").value || "name@thebackninegolf.com";
             const website = document.getElementById("website").value || "thebackninegolf.com";
@@ -63,19 +63,19 @@
             let image = document.getElementById("image").value || "https://iili.io/2yOuSp4.png";
 
             let contactInfo = `
-                <tr><td><img src='https://cdn-icons-png.flaticon.com/16/724/724664.png'></td><td style="padding-left: 12px;">${phone}</td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3917/3917144.png'></td><td style="padding-left: 12px;">${phone}</td></tr>
                 <tr><td><img src='https://cdn-icons-png.flaticon.com/16/732/732200.png'></td><td style="padding-left: 12px;">${email}</td></tr>
-                <tr><td><img src='https://cdn-icons-png.flaticon.com/16/2492/2492075.png'></td><td style="padding-left: 12px;">${website}</td></tr>
-                <tr><td><img src='https://cdn-icons-png.flaticon.com/16/684/684809.png'></td><td style="padding-left: 12px;">${address}</td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3917/3917321.png'></td><td style="padding-left: 12px;">${website}</td></tr>
+                <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3916/3916874.png'></td><td style="padding-left: 12px;">${address}</td></tr>
             `;
 
             let socialIcons = `
                 <tr>
                     <td colspan="2" style="padding-top: 10px;">
-                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/16/733/733547.png" style="margin-right: 8px;"></a>
-                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/16/2111/2111463.png" style="margin-right: 8px;"></a>
-                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/16/1384/1384060.png" style="margin-right: 8px;"></a>
-                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/16/145/145807.png"></a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/128/6422/6422199.png" style="margin-right: 8px;"></a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/128/6422/6422200.png" style="margin-right: 8px;"></a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/128/6422/6422215.png" style="margin-right: 8px;"></a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/128/6422/6422202.png"></a>
                     </td>
                 </tr>
             `;
