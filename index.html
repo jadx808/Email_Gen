@@ -32,7 +32,7 @@
     <input type="email" id="email" placeholder="name@thebackninegolf.com">
 
     <label for="website">Website</label>
-    <input type="url" id="website" value="thebackninegolf.com">
+    <input type="url" id="website" placeholder="https://thebackninegolf.com">
 
     <label for="address">Address</label>
     <input type="text" id="address" placeholder="123 Backnine, Saint George, UT 84770">
@@ -52,18 +52,23 @@
     </div>
     <button onclick="copySignature()">Copy Signature</button>
 
-    <!-- Hidden contentEditable div for copying -->
+    <!-- Hidden div for correct copy-paste formatting -->
     <div id="hidden-copy" contenteditable="true" style="position: absolute; left: -9999px;"></div>
 
     <script>
+        function getInputValue(id) {
+            const input = document.getElementById(id);
+            return input.value.trim() || input.placeholder;
+        }
+
         function generateSignature() {
-            const name = document.getElementById("name").value || "Jared Uyehara";
-            const title = document.getElementById("title").value || "Creative Director";
-            const phone = document.getElementById("phone").value || "123 456 758";
-            const email = document.getElementById("email").value || "name@thebackninegolf.com";
-            const website = document.getElementById("website").value || "https://thebackninegolf.com";
-            const address = document.getElementById("address").value || "123 Backnine, Saint George, UT 84770";
-            let image = document.getElementById("image").value || "https://iili.io/2yOuSp4.png";
+            const name = getInputValue("name");
+            const title = getInputValue("title");
+            const phone = getInputValue("phone");
+            const email = getInputValue("email");
+            const website = getInputValue("website");
+            const address = getInputValue("address");
+            let image = getInputValue("image");
 
             let contactInfo = `
                 <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3917/3917144.png' width="16" height="16"></td>
@@ -115,8 +120,18 @@
             document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
 
-            // Ensure copied HTML retains full formatting
+            // Properly copy content as HTML, not raw code
             document.getElementById("hidden-copy").innerHTML = signatureHTML;
+        }
+
+        function copySignature() {
+            const copyDiv = document.getElementById("hidden-copy");
+            const range = document.createRange();
+            range.selectNode(copyDiv);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            alert("Signature copied! Paste it into Gmail.");
         }
     </script>
 </body>
