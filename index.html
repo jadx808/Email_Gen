@@ -51,25 +51,25 @@
 
     <script>
         function generateSignature() {
-            const name = document.getElementById("name").value || "Minerva Uyehara";
-            const title = document.getElementById("title").value || "Creative Director";
-            const email = document.getElementById("email").value || "minervuye@gmail.com";
+            const name = document.getElementById("name").value || "Your Name";
+            const title = document.getElementById("title").value || "Your Title";
+            const email = document.getElementById("email").value || "namee@thebackninegolf.com";
             const phone = document.getElementById("phone").value || "808-679-9019";
             const website = document.getElementById("website").value || "https://thebackninegolf.com";
             let image = document.getElementById("image").value || "https://iili.io/2yOuSp4.png";
             
             let contactInfo = "";
-            if (email) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/3916/3916611.png'></td><td>${email}</td></tr>`;
-            if (phone) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/8034/8034760.png'></td><td>${phone}</td></tr>`;
-            if (website) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/3917/3917538.png'></td><td>${website}</td></tr>`;
+            if (email) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/3916/3916611.png'></td><td style="padding-left: 8px;">${email}</td></tr>`;
+            if (phone) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/8034/8034760.png'></td><td style="padding-left: 8px;">${phone}</td></tr>`;
+            if (website) contactInfo += `<tr><td style="padding-right: 6px;"><img src='https://cdn-icons-png.flaticon.com/16/3917/3917538.png'></td><td style="padding-left: 8px;">${website}</td></tr>`;
             
             let signatureHTML = `
                 <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; background-color: transparent;">
                     <tr>
                         <td style="padding: 10px;">
-                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; width: 120px; height: 120px;">
+                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; max-width: 100%;">
                         </td>
-                        <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
+                        <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 12px; text-align: left;">
                             <p style="font-size: 17px; font-weight: bold; margin: 0;">${name}</p>
                             <p style="font-size: 15px; margin: 2px 0;">${title}</p>
                             <table style="width: 100%; border-spacing: 0px; border-collapse: collapse;">
