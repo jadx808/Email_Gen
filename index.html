@@ -82,25 +82,25 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" value="Your Name" oninput="updatePreview()">
+    <input type="text" id="name" value="NAME" oninput="updatePreview()">
 
     <label for="title">Job Title</label>
     <input type="text" id="title" value="Your Title" oninput="updatePreview()">
 
     <label for="mobile">Mobile Number</label>
-    <input type="tel" id="mobile" value="987-654-321" oninput="updatePreview()">
+    <input type="tel" id="mobile" oninput="updatePreview()">
 
     <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" value="123-456-758" oninput="updatePreview()">
+    <input type="tel" id="phone" oninput="updatePreview()">
 
     <label for="email">Email</label>
-    <input type="email" id="email" value="name@thebackninegolf.com" oninput="updatePreview()">
+    <input type="email" id="email" oninput="updatePreview()">
 
     <label for="website">Website</label>
-    <input type="url" id="website" value="www.thebackninegolf.com" oninput="updatePreview()">
+    <input type="url" id="website" oninput="updatePreview()">
 
     <label for="address">Address</label>
-    <input type="text" id="address" value="123 Backnine, Saint George, UT 84770" oninput="updatePreview()">
+    <input type="text" id="address" oninput="updatePreview()">
 
     <label for="image">Profile Image URL</label>
     <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
@@ -154,22 +154,15 @@
             document.getElementById("imagePreview").style.width = document.getElementById("imageSize").value + "px";
             document.getElementById("imagePreview").style.height = document.getElementById("imageSize").value + "px";
             document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
-        }
 
-        function copySignature() {
-            let previewBox = document.getElementById("preview-box").cloneNode(true);
-            let imgTag = previewBox.querySelector("#imagePreview");
-            imgTag.src = base64Image || document.getElementById("image").value;
+            let contactHTML = "";
+            if (document.getElementById("mobile").value.trim()) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${document.getElementById("mobile").value}</td></tr>`;
+            if (document.getElementById("phone").value.trim()) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${document.getElementById("phone").value}</td></tr>`;
+            if (document.getElementById("email").value.trim()) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${document.getElementById("email").value}</td></tr>`;
+            if (document.getElementById("website").value.trim()) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${document.getElementById("website").value}</td></tr>`;
+            if (document.getElementById("address").value.trim()) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${document.getElementById("address").value}</td></tr>`;
 
-            document.body.appendChild(previewBox);
-            let range = document.createRange();
-            range.selectNodeContents(previewBox);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            document.body.removeChild(previewBox);
-
-            alert("✅ Signature copied! Paste it into Gmail.");
+            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
     </script>
 </body>
