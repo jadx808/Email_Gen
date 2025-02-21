@@ -16,6 +16,7 @@
         .info-table td { padding: 2px 4px; vertical-align: middle; white-space: nowrap; line-height: 1.1; }
         .info-table img { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; }
         .contact-info-container { display: flex; flex-direction: column; padding-left: 18px; }
+        .clickable a { text-decoration: none; color: #000; }
     </style>
 </head>
 <body>
@@ -23,27 +24,27 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" value="Your Name" oninput="updatePreview()">
+    <input type="text" id="name" value="Your Name Here" oninput="updatePreview()">
 
     <label for="title">Job Title</label>
-    <input type="text" id="title" value="Your Title" oninput="updatePreview()">
+    <input type="text" id="title" value="Your Title Here" oninput="updatePreview()">
 
     <label for="mobile">Mobile Number</label>
-    <input type="tel" id="mobile" value="987-654-321" oninput="updatePreview()">
+    <input type="tel" id="mobile" value="987 654 321" oninput="updatePreview()">
 
     <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" value="123-456-758" oninput="updatePreview()">
+    <input type="tel" id="phone" value="123 456 758" oninput="updatePreview()">
 
     <label for="email">Email</label>
     <input type="email" id="email" value="name@thebackninegolf.com" oninput="updatePreview()">
 
     <label for="website">Website</label>
-    <input type="url" id="website" value="www.thebackninegolf.com" oninput="updatePreview()">
+    <input type="url" id="website" value="https://thebackninegolf.com" oninput="updatePreview()">
 
     <label for="address">Address</label>
     <input type="text" id="address" value="123 Backnine, Saint George, UT 84770" oninput="updatePreview()">
 
-    <label for="image">Profile Image 200x200</label>
+    <label for="image">Profile Image</label>
     <input type="file" id="imageUpload" accept="image/*">
     <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
 
@@ -66,7 +67,7 @@
                     <div class="contact-info-container">
                         <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Jared Uyehara</p>
                         <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Creative Director</p>
-                        <table id="contactInfo" class="info-table"></table>
+                        <table id="contactInfo" class="info-table clickable"></table>
                     </div>
                 </td>
             </tr>
@@ -91,23 +92,20 @@
         }
 
         function updatePreview() {
-            // Update Name & Title
             document.getElementById("previewName").textContent = getInputValue("name") || "Your Name";
             document.getElementById("previewTitle").textContent = getInputValue("title") || "Your Title";
 
-            // Update Image
             document.getElementById("imagePreview").src = getInputValue("image");
             const imageSize = getInputValue("imageSize") + "px";
             document.getElementById("imagePreview").style.width = imageSize;
             document.getElementById("imagePreview").style.height = imageSize;
             document.getElementById("imageSizeValue").textContent = imageSize;
 
-            // Update Contact Info
             let contactHTML = "";
-            if (getInputValue("mobile")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${getInputValue("mobile")}</td></tr>`;
-            if (getInputValue("phone")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${getInputValue("phone")}</td></tr>`;
-            if (getInputValue("email")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${getInputValue("email")}</td></tr>`;
-            if (getInputValue("website")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${getInputValue("website")}</td></tr>`;
+            if (getInputValue("mobile")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td><a href="tel:${getInputValue("mobile")}">${getInputValue("mobile")}</a></td></tr>`;
+            if (getInputValue("phone")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td><a href="tel:${getInputValue("phone")}">${getInputValue("phone")}</a></td></tr>`;
+            if (getInputValue("email")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td><a href="mailto:${getInputValue("email")}">${getInputValue("email")}</a></td></tr>`;
+            if (getInputValue("website")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td><a href="${getInputValue("website")}" target="_blank">${getInputValue("website")}</a></td></tr>`;
             if (getInputValue("address")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${getInputValue("address")}</td></tr>`;
 
             document.getElementById("contactInfo").innerHTML = contactHTML;
