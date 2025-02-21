@@ -54,9 +54,17 @@
 
     <h3>Signature Preview:</h3>
     <div id="preview-box" class="signature-box" style="display: none;">
-        <div id="signature-preview">
-            <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
-        </div>
+        <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
+            <tr>
+                <td style="padding: 10px; text-align: center;">
+                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
+                </td>
+                <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
+                    <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Jared Uyehara</p>
+                    <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Creative Director</p>
+                </td>
+            </tr>
+        </table>
     </div>
     <button onclick="copySignature()">Copy Signature</button>
 
@@ -73,12 +81,8 @@
             }
         });
 
-        function getInputValue(id) {
-            return document.getElementById(id).value.trim();
-        }
-
         function updatePreviewImage() {
-            const imageUrl = getInputValue("image");
+            const imageUrl = document.getElementById("image").value;
             document.getElementById("imagePreview").src = imageUrl;
         }
 
@@ -89,59 +93,28 @@
         }
 
         function generateSignature() {
-            const name = getInputValue("name");
-            const title = getInputValue("title");
-            const mobile = getInputValue("mobile");
-            const phone = getInputValue("phone");
-            const email = getInputValue("email");
-            const website = getInputValue("website");
-            const address = getInputValue("address");
-            let image = getInputValue("image");
-            let imageSize = document.getElementById("imageSize").value;
-
-            let contactInfo = "";
-            if (mobile) contactInfo += `
-                <tr>
-                    <td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png" width="16" height="16"></td>
-                    <td style="padding-left: 12px;"><a href="tel:${mobile}">${mobile}</a></td>
-                </tr>`;
-            if (phone) contactInfo += `
-                <tr>
-                    <td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png" width="16" height="16"></td>
-                    <td style="padding-left: 12px;"><a href="tel:${phone}">${phone}</a></td>
-                </tr>`;
-            if (email) contactInfo += `
-                <tr>
-                    <td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png" width="16" height="16"></td>
-                    <td style="padding-left: 12px;"><a href="mailto:${email}">${email}</a></td>
-                </tr>`;
-            if (website) contactInfo += `
-                <tr>
-                    <td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png" width="16" height="16"></td>
-                    <td style="padding-left: 12px;"><a href="${website}" target="_blank">${website}</a></td>
-                </tr>`;
-            if (address) contactInfo += `
-                <tr>
-                    <td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png" width="16" height="16"></td>
-                    <td style="padding-left: 12px;">${address}</td>
-                </tr>`;
-
-            let signatureHTML = `
-                <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
-                    <tr>
-                        <td style="padding: 10px; text-align: center;">
-                            <img src='${image}' alt='Profile Image' class="image-preview" style="width: ${imageSize}px; height: ${imageSize}px; border-radius: 50%;">
-                        </td>
-                        <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
-                            ${name ? `<p style="font-size: 17px; font-weight: bold; margin: 0;">${name}</p>` : ""}
-                            ${title ? `<p style="font-size: 15px; margin: 2px 0;">${title}</p>` : ""}
-                            <table>${contactInfo}</table>
-                        </td>
-                    </tr>
-                </table>`;
-
-            document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
+
+            document.getElementById("previewName").textContent = document.getElementById("name").value;
+            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+
+            updatePreviewImage();
+            updateImageSize(document.getElementById("imageSize").value);
+        }
+
+        function copySignature() {
+            const copyDiv = document.createElement("div");
+            copyDiv.contentEditable = "true";
+            document.body.appendChild(copyDiv);
+            copyDiv.innerHTML = document.getElementById("preview-box").innerHTML;
+
+            const range = document.createRange();
+            range.selectNodeContents(copyDiv);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            document.body.removeChild(copyDiv);
+            alert("✅ Signature copied! Paste it into Gmail.");
         }
     </script>
 </body>
