@@ -46,7 +46,7 @@
 
     <label for="image">Profile Image</label>
     <input type="file" id="imageUpload" accept="image/*">
-    <input type="hidden" id="imageBase64"> <!-- Stores Base64 image -->
+    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
 
     <label for="imageSize">Image Size</label>
     <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
@@ -61,7 +61,7 @@
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
-                    <img id="imagePreview" class="image-preview" alt="Profile Image" style="width: 120px; height: 120px;">
+                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
                     <div class="contact-info-container">
@@ -80,7 +80,7 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById("imageBase64").value = e.target.result;
+                    document.getElementById("image").value = e.target.result;
                     updatePreview();
                 };
                 reader.readAsDataURL(file);
@@ -95,11 +95,7 @@
             document.getElementById("previewName").textContent = getInputValue("name") || "Your Name";
             document.getElementById("previewTitle").textContent = getInputValue("title") || "Your Title";
 
-            const base64Image = document.getElementById("imageBase64").value;
-            if (base64Image) {
-                document.getElementById("imagePreview").src = base64Image;
-            }
-
+            document.getElementById("imagePreview").src = getInputValue("image");
             const imageSize = getInputValue("imageSize") + "px";
             document.getElementById("imagePreview").style.width = imageSize;
             document.getElementById("imagePreview").style.height = imageSize;
@@ -132,4 +128,3 @@
     </script>
 </body>
 </html>
-
