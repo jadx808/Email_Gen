@@ -7,10 +7,11 @@
     <style>
         body { font-family: 'Inter', Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; text-align: center; background-color: transparent; }
         label { display: block; margin-top: 4px; font-weight: bold; text-align: left; font-size: 13px; }
-        input { width: 100%; padding: 5px; margin-top: 2px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
+        input, select { width: 100%; padding: 5px; margin-top: 2px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #88B92E; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
+        .image-preview { display: block; margin: auto; border-radius: 50%; }
     </style>
 </head>
 <body>
@@ -42,6 +43,10 @@
     <input type="file" id="imageUpload" accept="image/*">
     <input type="url" id="image" value="https://iili.io/2yOuSp4.png">
 
+    <label for="imageSize">Image Size</label>
+    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updateImageSize(this.value)">
+    <span id="imageSizeValue">120px</span>
+
     <div class="btn-group">
         <button onclick="generateSignature()">Generate Signature</button>
         <button onclick="resetForm()">Reset</button>
@@ -60,6 +65,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById("image").value = e.target.result;
+                    document.getElementById("imagePreview").src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -67,6 +73,10 @@
 
         function getInputValue(id) {
             return document.getElementById(id).value.trim();
+        }
+
+        function updateImageSize(size) {
+            document.getElementById("imageSizeValue").textContent = size + "px";
         }
 
         function generateSignature() {
@@ -78,6 +88,7 @@
             const website = getInputValue("website");
             const address = getInputValue("address");
             let image = getInputValue("image");
+            let imageSize = document.getElementById("imageSize").value;
 
             let contactInfo = "";
             if (mobile) contactInfo += `
@@ -110,7 +121,7 @@
                 <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
                     <tr>
                         <td style="padding: 10px; text-align: center;">
-                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; max-width: 400px; display: block; margin: auto;">
+                            <img src='${image}' id="imagePreview" alt='Profile Image' class="image-preview" style="width: ${imageSize}px; height: ${imageSize}px;">
                         </td>
                         <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
                             ${name ? `<p style="font-size: 17px; font-weight: bold; margin: 0;">${name}</p>` : ""}
