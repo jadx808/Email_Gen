@@ -15,6 +15,7 @@
         .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
         .info-table td { padding: 2px 4px; vertical-align: middle; white-space: nowrap; line-height: 1.1; }
         .info-table img { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; }
+        .contact-info-container { display: flex; flex-direction: column; padding-left: 18px; }
     </style>
 </head>
 <body>
@@ -22,10 +23,10 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" value="Jared Uyehara" oninput="updatePreview()">
+    <input type="text" id="name" value="You Name" oninput="updatePreview()">
 
     <label for="title">Job Title</label>
-    <input type="text" id="title" value="Creative Director" oninput="updatePreview()">
+    <input type="text" id="title" value="Your Title" oninput="updatePreview()">
 
     <label for="mobile">Mobile Number</label>
     <input type="tel" id="mobile" value="987 654 321" oninput="updatePreview()">
@@ -61,10 +62,12 @@
                 <td style="padding: 10px; text-align: center;">
                     <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
                 </td>
-                <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 14px; text-align: left;">
-                    <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Jared Uyehara</p>
-                    <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Creative Director</p>
-                    <table id="contactInfo" class="info-table"></table>
+                <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
+                    <div class="contact-info-container">
+                        <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Jared Uyehara</p>
+                        <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Creative Director</p>
+                        <table id="contactInfo" class="info-table"></table>
+                    </div>
                 </td>
             </tr>
         </table>
