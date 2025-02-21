@@ -17,12 +17,13 @@
         .info-table img { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; }
         .contact-info-container { display: flex; flex-direction: column; padding-left: 18px; }
         .clickable a { text-decoration: none; color: #000; }
+        #hidden-copy { position: absolute; left: -9999px; top: 0; }
     </style>
 </head>
 <body>
     <h2>Back Nine Golf Email Signature Generator</h2>
     <p>Fill in your details below to generate your email signature.</p>
-    
+
     <label for="name">Full Name</label>
     <input type="text" id="name" value="Jared Uyehara" oninput="updatePreview()">
 
@@ -44,10 +45,9 @@
     <label for="address">Address</label>
     <input type="text" id="address" value="123 Backnine, Saint George, UT 84770" oninput="updatePreview()">
 
-    <label for="image">Profile Image (200x200)</label>
+    <label for="imageUpload">Profile Image (200x200)</label>
     <input type="file" id="imageUpload" accept="image/*">
-    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
-    <input type="hidden" id="imageBase64"> <!-- Stores Base64 image -->
+    <input type="hidden" id="imageBase64">
 
     <label for="imageSize">Image Size</label>
     <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
@@ -74,5 +74,49 @@
             </tr>
         </table>
     </div>
+
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("imageBase64").value = e.target.result;
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function getInputValue(id) {
+            return document.getElementById(id).value.trim();
+        }
+
+        function updatePreview() {
+            const imageBase64 = document.getElementById("imageBase64").value || "https://iili.io/2yOuSp4.png";
+            document.getElementById("imagePreview").src = imageBase64;
+
+            const imageSize = document.getElementById("imageSize").value + "px";
+            document.getElementById("imagePreview").style.width = imageSize;
+            document.getElementById("imagePreview").style.height = imageSize;
+            document.getElementById("imageSizeValue").textContent = imageSize;
+        }
+
+        function copySignature() {
+            const copyDiv = document.createElement("div");
+            copyDiv.contentEditable = "true";
+            document.body.appendChild(copyDiv);
+
+            copyDiv.innerHTML = document.getElementById("preview-box").innerHTML;
+            const range = document.createRange();
+            range.selectNodeContents(copyDiv);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+
+            document.body.removeChild(copyDiv);
+            alert("✅ Signature copied! Paste it into Gmail.");
+        }
+    </script>
 </body>
 </html>
