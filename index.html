@@ -41,10 +41,10 @@
 
     <label for="image">Profile Image</label>
     <input type="file" id="imageUpload" accept="image/*">
-    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreviewImage()">
+    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
 
     <label for="imageSize">Image Size</label>
-    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updateImageSize(this.value)">
+    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
     <span id="imageSizeValue">120px</span>
 
     <div class="btn-group">
@@ -74,7 +74,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById("image").value = e.target.result;
-                    updatePreviewImage();
+                    updatePreview();
                 };
                 reader.readAsDataURL(file);
             }
@@ -84,20 +84,18 @@
             return document.getElementById(id).value.trim();
         }
 
-        function updatePreviewImage() {
-            document.getElementById("imagePreview").src = getInputValue("image");
-        }
-
-        function updateImageSize(size) {
-            document.getElementById("imageSizeValue").textContent = size + "px";
-            document.getElementById("imagePreview").style.width = size + "px";
-            document.getElementById("imagePreview").style.height = size + "px";
-        }
-
         function updatePreview() {
-            document.getElementById("previewName").textContent = getInputValue("name");
-            document.getElementById("previewTitle").textContent = getInputValue("title");
+            // Update Name & Title
+            document.getElementById("previewName").textContent = getInputValue("name") || "Your Name";
+            document.getElementById("previewTitle").textContent = getInputValue("title") || "Your Title";
 
+            // Update Image
+            document.getElementById("imagePreview").src = getInputValue("image");
+            document.getElementById("imagePreview").style.width = getInputValue("imageSize") + "px";
+            document.getElementById("imagePreview").style.height = getInputValue("imageSize") + "px";
+            document.getElementById("imageSizeValue").textContent = getInputValue("imageSize") + "px";
+
+            // Update Contact Info
             let contactHTML = "";
             if (getInputValue("mobile")) contactHTML += `<tr><td>📱</td><td>${getInputValue("mobile")}</td></tr>`;
             if (getInputValue("phone")) contactHTML += `<tr><td>📞</td><td>${getInputValue("phone")}</td></tr>`;
