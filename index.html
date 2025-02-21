@@ -21,7 +21,7 @@
     <p>Fill in your details below to generate your email signature.</p>
 
     <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="Jared Uyehara">
+    <input type="text" id="name" placeholder="Name">
 
     <label for="title">Job Title</label>
     <input type="text" id="title" placeholder="Creative Director">
@@ -41,7 +41,11 @@
     <label for="imageUpload">Profile Image (200x200)</label>
     <input type="file" id="imageUpload" accept="image/*">
     <input type="text" id="imageURL" placeholder="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
-    <input type="hidden" id="imageBase64"> <!-- Stores the Base64 image -->
+    <input type="hidden" id="imageBase64"> <!-- Stores Base64 image -->
+
+    <label for="imageSize">Image Size</label>
+    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
+    <span id="imageSizeValue">120px</span>
 
     <div class="btn-group">
         <button onclick="generateSignature()">Generate Signature</button>
@@ -80,8 +84,10 @@
             const imageUrl = getInputValue("imageURL");
 
             const image = imageBase64 || imageUrl;
+            const imageSize = document.getElementById("imageSize").value + "px";
+            document.getElementById("imageSizeValue").textContent = imageSize;
 
-            document.getElementById("signature-preview").innerHTML = generateSignatureHTML(image);
+            document.getElementById("signature-preview").innerHTML = generateSignatureHTML(image, imageSize);
             document.getElementById("preview-box").style.display = "block";
         }
 
@@ -90,15 +96,16 @@
             const imageUrl = getInputValue("imageURL");
 
             const image = imageBase64 || imageUrl;
+            const imageSize = document.getElementById("imageSize").value + "px";
 
-            document.getElementById("signature-preview").innerHTML = generateSignatureHTML(image);
+            document.getElementById("signature-preview").innerHTML = generateSignatureHTML(image, imageSize);
             document.getElementById("preview-box").style.display = "block";
 
             // Store signature in hidden div for proper copy
-            document.getElementById("hidden-copy").innerHTML = generateSignatureHTML(image);
+            document.getElementById("hidden-copy").innerHTML = generateSignatureHTML(image, imageSize);
         }
 
-        function generateSignatureHTML(image) {
+        function generateSignatureHTML(image, imageSize) {
             const name = getInputValue("name");
             const title = getInputValue("title");
             const phone = getInputValue("phone");
@@ -121,7 +128,7 @@
                 <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; background-color: transparent;">
                     <tr>
                         <td style="padding: 10px; text-align: center;">
-                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; width: 200px; height: 200px; display: block; margin: auto;">
+                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; width: ${imageSize}; height: ${imageSize}; display: block; margin: auto;">
                         </td>
                         <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
                             <p style="font-size: 17px; font-weight: bold; margin: 0;">${name}</p>
@@ -132,17 +139,6 @@
                         </td>
                     </tr>
                 </table>`;
-        }
-
-        function copySignature() {
-            const copyDiv = document.getElementById("hidden-copy");
-            copyDiv.contentEditable = "true";
-            const range = document.createRange();
-            range.selectNodeContents(copyDiv);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            alert("✅ Signature copied! Paste it into Gmail.");
         }
     </script>
 </body>
