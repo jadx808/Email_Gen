@@ -5,17 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Back Nine Golf Email Signature Generator</title>
     <style>
-        body { font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; text-align: center; background-color: transparent; }
-        label { display: block; margin-top: 4px; font-weight: bold; text-align: left; font-size: 13px; }
-        input, select { width: 100%; padding: 5px; margin-top: 2px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
-        button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
-        button:hover { background-color: #88B92E; }
-        .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
-        .image-preview { display: block; margin: auto; border-radius: 50%; transition: width 0.1s ease, height 0.1s ease; }
-        .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
-        .info-table td { padding: 2px 4px; vertical-align: middle; white-space: nowrap; line-height: 1.1; }
-        .info-table img { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; }
-        .contact-info-container { display: flex; flex-direction: column; padding-left: 18px; }
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+            background-color: transparent;
+        }
+        label {
+            display: block;
+            margin-top: 4px;
+            font-weight: bold;
+            text-align: left;
+            font-size: 13px;
+        }
+        input, select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 2px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+        button {
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #99CA3C;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #88B92E;
+        }
+        .signature-box {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            text-align: left;
+        }
+        .image-preview {
+            display: block;
+            margin: auto;
+            border-radius: 50%;
+            transition: width 0.1s ease, height 0.1s ease;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        .info-table td {
+            padding: 2px 4px;
+            vertical-align: middle;
+            white-space: nowrap;
+            line-height: 1.1;
+        }
+        .info-table img {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+        .contact-info-container {
+            display: flex;
+            flex-direction: column;
+            padding-left: 18px;
+        }
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            input, select {
+                font-size: 12px;
+            }
+            .signature-box {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -64,8 +134,8 @@
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
                     <div class="contact-info-container">
-                        <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Jared Uyehara</p>
-                        <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Creative Director</p>
+                        <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
+                        <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Your Title</p>
                         <table id="contactInfo" class="info-table"></table>
                     </div>
                 </td>
@@ -100,33 +170,6 @@
             const imageSize = getInputValue("imageSize") + "px";
             document.getElementById("imagePreview").style.width = imageSize;
             document.getElementById("imagePreview").style.height = imageSize;
-            document.getElementById("imageSizeValue").textContent = imageSize;
-
-            // Update Contact Info
-            let contactHTML = "";
-            if (getInputValue("mobile")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${getInputValue("mobile")}</td></tr>`;
-            if (getInputValue("phone")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${getInputValue("phone")}</td></tr>`;
-            if (getInputValue("email")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${getInputValue("email")}</td></tr>`;
-            if (getInputValue("website")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${getInputValue("website")}</td></tr>`;
-            if (getInputValue("address")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${getInputValue("address")}</td></tr>`;
-
-            document.getElementById("contactInfo").innerHTML = contactHTML;
-        }
-
-        function copySignature() {
-            const copyDiv = document.createElement("div");
-            copyDiv.contentEditable = "true";
-            document.body.appendChild(copyDiv);
-            copyDiv.innerHTML = document.getElementById("preview-box").innerHTML;
-
-            const range = document.createRange();
-            range.selectNodeContents(copyDiv);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            document.body.removeChild(copyDiv);
-            alert("✅ Signature copied! Paste it into Gmail.");
-        }
-    </script>
-</body>
-</html>
+            document.getElementById("imageSizeValue").textContent = imageSize
+::contentReference[oaicite:0]{index=0}
+ 
