@@ -24,14 +24,29 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" value="This is Your name" oninput="updatePreview()">
+    <input type="text" id="name" value="Jared Uyehara" oninput="updatePreview()">
 
     <label for="title">Job Title</label>
-    <input type="text" id="title" value="Your Title" oninput="updatePreview()">
+    <input type="text" id="title" value="Creative Director" oninput="updatePreview()">
+
+    <label for="mobile">Mobile Number</label>
+    <input type="tel" id="mobile" value="987 654 321" oninput="updatePreview()">
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" value="123 456 758" oninput="updatePreview()">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" value="name@thebackninegolf.com" oninput="updatePreview()">
+
+    <label for="website">Website</label>
+    <input type="url" id="website" value="https://thebackninegolf.com" oninput="updatePreview()">
+
+    <label for="address">Address</label>
+    <input type="text" id="address" value="123 Backnine, Saint George, UT 84770" oninput="updatePreview()">
 
     <label for="image">Profile Image</label>
     <input type="file" id="imageUpload" accept="image/*">
-    <input type="hidden" id="imageBase64"> <!-- Stores Base64 string -->
+    <input type="hidden" id="imageBase64"> <!-- Stores Base64 image -->
 
     <label for="imageSize">Image Size</label>
     <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
@@ -52,6 +67,7 @@
                     <div class="contact-info-container">
                         <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Jared Uyehara</p>
                         <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Creative Director</p>
+                        <table id="contactInfo" class="info-table clickable"></table>
                     </div>
                 </td>
             </tr>
@@ -88,6 +104,15 @@
             document.getElementById("imagePreview").style.width = imageSize;
             document.getElementById("imagePreview").style.height = imageSize;
             document.getElementById("imageSizeValue").textContent = imageSize;
+
+            let contactHTML = "";
+            if (getInputValue("mobile")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td><a href="tel:${getInputValue("mobile")}">${getInputValue("mobile")}</a></td></tr>`;
+            if (getInputValue("phone")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td><a href="tel:${getInputValue("phone")}">${getInputValue("phone")}</a></td></tr>`;
+            if (getInputValue("email")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td><a href="mailto:${getInputValue("email")}">${getInputValue("email")}</a></td></tr>`;
+            if (getInputValue("website")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td><a href="${getInputValue("website")}" target="_blank">${getInputValue("website")}</a></td></tr>`;
+            if (getInputValue("address")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${getInputValue("address")}</td></tr>`;
+
+            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
         function copySignature() {
@@ -107,3 +132,4 @@
     </script>
 </body>
 </html>
+
