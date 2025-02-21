@@ -102,7 +102,8 @@
     <label for="address">Address</label>
     <input type="text" id="address" value="123 Backnine, Saint George, UT 84770" oninput="updatePreview()">
 
-    <label for="image">Profile Image</label>
+    <label for="image">Profile Image URL</label>
+    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
     <input type="file" id="imageUpload" accept="image/*">
 
     <label for="imageSize">Image Size</label>
@@ -118,12 +119,13 @@
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
-                    <img id="imagePreview" class="image-preview" src="" alt="Profile Image" style="width: 120px; height: 120px;">
+                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
                     <div class="contact-info-container">
                         <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
                         <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Your Title</p>
+                        <table id="contactInfo" class="info-table"></table>
                     </div>
                 </td>
             </tr>
@@ -140,7 +142,6 @@
                 reader.onload = function(e) {
                     base64Image = e.target.result;
                     document.getElementById("imagePreview").src = base64Image;
-                    updatePreview();
                 };
                 reader.readAsDataURL(file);
             }
@@ -149,6 +150,7 @@
         function updatePreview() {
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+            document.getElementById("imagePreview").src = base64Image || document.getElementById("image").value;
             document.getElementById("imagePreview").style.width = document.getElementById("imageSize").value + "px";
             document.getElementById("imagePreview").style.height = document.getElementById("imageSize").value + "px";
             document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
@@ -157,7 +159,7 @@
         function copySignature() {
             let previewBox = document.getElementById("preview-box").cloneNode(true);
             let imgTag = previewBox.querySelector("#imagePreview");
-            if (base64Image) imgTag.src = base64Image;
+            imgTag.src = base64Image || document.getElementById("image").value;
 
             document.body.appendChild(previewBox);
             let range = document.createRange();
