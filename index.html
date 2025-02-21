@@ -11,25 +11,6 @@
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #88B92E; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
-        .instructions {
-            margin-top: 20px;
-            text-align: left;
-            padding: 15px;
-            background: #f4f4f4;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .instructions h3 {
-            color: #2d2d2d;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        .instructions ol {
-            padding-left: 20px;
-        }
-        .instructions li {
-            margin-bottom: 8px;
-        }
     </style>
 </head>
 <body>
@@ -37,10 +18,10 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" value="Your Name">
+    <input type="text" id="name" value="Jared Uyehara">
 
     <label for="title">Job Title</label>
-    <input type="text" id="title" value="Your Title">
+    <input type="text" id="title" value="Creative Director">
 
     <label for="phone">Phone Number</label>
     <input type="tel" id="phone" value="123 456 758">
@@ -59,33 +40,15 @@
     <input type="url" id="image" value="https://iili.io/2yOuSp4.png">
 
     <div class="btn-group">
-        <button id="generate-btn" onclick="generateSignature()">Generate Signature</button>
-        <button id="reset-btn" onclick="resetForm()">Reset</button>
+        <button onclick="generateSignature()">Generate Signature</button>
+        <button onclick="resetForm()">Reset</button>
     </div>
 
     <h3>Signature Preview:</h3>
     <div id="preview-box" class="signature-box" style="display: none;">
         <div id="signature-preview"></div>
     </div>
-    <button id="copy-btn" onclick="copySignature()">Copy Signature</button>
-
-    <!-- Styled Instructions -->
-    <div class="instructions">
-        <h3>📌 How to Add Your Signature to Gmail</h3>
-        <p>Follow these steps to copy your signature and set it up in Gmail:</p>
-        <ol>
-            <li><strong>Click "Copy Signature"</strong> to copy your email signature.</li>
-            <li>Go to <strong>Gmail Settings</strong> (⚙️ Gear icon in the top right).</li>
-            <li>Select <strong>"See all settings"</strong> and go to the <strong>"General" tab</strong>.</li>
-            <li>Scroll down to the <strong>"Signature" section</strong>.</li>
-            <li>Click <strong>"Create New"</strong> and enter a name for your signature.</li>
-            <li>Right-click in the signature box and select <strong>"Paste"</strong> (or press <strong>Ctrl + V</strong> on Windows / <strong>Cmd + V</strong> on Mac).</li>
-            <li>Ensure your signature appears correctly, with images and links.</li>
-            <li>Set your signature as default for new emails and replies (optional).</li>
-            <li>Scroll down and click <strong>"Save Changes"</strong>.</li>
-        </ol>
-        <p>✅ Your new Back Nine Golf signature is now ready to use in Gmail!</p>
-    </div>
+    <button onclick="copySignature()">Copy Signature</button>
 
     <script>
         document.getElementById("imageUpload").addEventListener("change", function(event) {
@@ -113,10 +76,26 @@
             let image = getInputValue("image");
 
             let contactInfo = "";
-            if (phone) contactInfo += `<tr><td>📞</td><td>${phone}</td></tr>`;
-            if (email) contactInfo += `<tr><td>📧</td><td>${email}</td></tr>`;
-            if (website) contactInfo += `<tr><td>🌐</td><td>${website}</td></tr>`;
-            if (address) contactInfo += `<tr><td>📍</td><td>${address}</td></tr>`;
+            if (phone) contactInfo += `
+                <tr>
+                    <td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png" width="16" height="16"></td>
+                    <td style="padding-left: 12px;"><a href="tel:${phone}">${phone}</a></td>
+                </tr>`;
+            if (email) contactInfo += `
+                <tr>
+                    <td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png" width="16" height="16"></td>
+                    <td style="padding-left: 12px;"><a href="mailto:${email}">${email}</a></td>
+                </tr>`;
+            if (website) contactInfo += `
+                <tr>
+                    <td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png" width="16" height="16"></td>
+                    <td style="padding-left: 12px;"><a href="${website}" target="_blank">${website}</a></td>
+                </tr>`;
+            if (address) contactInfo += `
+                <tr>
+                    <td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png" width="16" height="16"></td>
+                    <td style="padding-left: 12px;">${address}</td>
+                </tr>`;
 
             let signatureHTML = `
                 <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
