@@ -82,7 +82,7 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" value="Your Name" oninput="updatePreview()">
+    <input type="text" id="name" value="Your Full Name" oninput="updatePreview()">
 
     <label for="title">Job Title</label>
     <input type="text" id="title" value="Your Title" oninput="updatePreview()">
@@ -142,6 +142,7 @@
                 reader.onload = function(e) {
                     base64Image = e.target.result;
                     document.getElementById("imagePreview").src = base64Image;
+                    updatePreview();
                 };
                 reader.readAsDataURL(file);
             }
@@ -157,7 +158,7 @@
 
             let contactHTML = "";
             function addContactRow(icon, value) {
-                if (value.trim() !== "") {
+                if (value.trim()) {
                     contactHTML += `<tr><td><img src="${icon}"></td><td>${value}</td></tr>`;
                 }
             }
