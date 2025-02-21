@@ -75,17 +75,6 @@
             flex-direction: column;
             padding-left: 18px;
         }
-        @media screen and (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            input, select {
-                font-size: 12px;
-            }
-            .signature-box {
-                font-size: 14px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -113,9 +102,8 @@
     <label for="address">Address</label>
     <input type="text" id="address" value="123 Backnine, Saint George, UT 84770" oninput="updatePreview()">
 
-    <label for="image">Profile Image 200x200</label>
+    <label for="image">Profile Image</label>
     <input type="file" id="imageUpload" accept="image/*">
-    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
 
     <label for="imageSize">Image Size</label>
     <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
@@ -130,7 +118,7 @@
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
-                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
+                    <img id="imagePreview" class="image-preview" src="" alt="Profile Image" style="width: 120px; height: 120px;">
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
                     <div class="contact-info-container">
@@ -144,30 +132,45 @@
     </div>
 
     <script>
+        let base64Image = "";
+
+        document.getElementById("imageUpload").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64Image = e.target.result;
+                    document.getElementById("imagePreview").src = base64Image;
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         function updatePreview() {
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
-            document.getElementById("imagePreview").src = document.getElementById("image").value;
             document.getElementById("imagePreview").style.width = document.getElementById("imageSize").value + "px";
             document.getElementById("imagePreview").style.height = document.getElementById("imageSize").value + "px";
             document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
-
-            let contactHTML = `
-                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${document.getElementById("mobile").value}</td></tr>
-                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${document.getElementById("phone").value}</td></tr>
-                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${document.getElementById("email").value}</td></tr>
-                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${document.getElementById("website").value}</td></tr>
-            `;
-            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
         function copySignature() {
-            let previewBox = document.getElementById("preview-box");
+            let previewBox = document.getElementById("preview-box").cloneNode(true);
+
+            if (base64Image) {
+                let imgTag = previewBox.querySelector("#imagePreview");
+                imgTag.src = base64Image; // Ensure the image is copied as a Base64 inline image
+            }
+
+            document.body.appendChild(previewBox);
             let range = document.createRange();
             range.selectNodeContents(previewBox);
             window.getSelection().removeAllRanges();
             window.getSelection().addRange(range);
             document.execCommand("copy");
+            document.body.removeChild(previewBox);
+
             alert("✅ Signature copied! Paste it into Gmail.");
         }
     </script>
