@@ -19,25 +19,25 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" value="Jared Uyehara">
+    <input type="text" id="name" value="Jared Uyehara" oninput="updatePreview()">
 
     <label for="title">Job Title</label>
-    <input type="text" id="title" value="Creative Director">
+    <input type="text" id="title" value="Creative Director" oninput="updatePreview()">
 
     <label for="mobile">Mobile Number</label>
-    <input type="tel" id="mobile" value="987 654 321">
+    <input type="tel" id="mobile" value="987 654 321" oninput="updatePreview()">
 
     <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" value="123 456 758">
+    <input type="tel" id="phone" value="123 456 758" oninput="updatePreview()">
 
     <label for="email">Email</label>
-    <input type="email" id="email" value="name@thebackninegolf.com">
+    <input type="email" id="email" value="name@thebackninegolf.com" oninput="updatePreview()">
 
     <label for="website">Website</label>
-    <input type="url" id="website" value="https://thebackninegolf.com">
+    <input type="url" id="website" value="https://thebackninegolf.com" oninput="updatePreview()">
 
     <label for="address">Address</label>
-    <input type="text" id="address" value="123 Backnine, Saint George, UT 84770">
+    <input type="text" id="address" value="123 Backnine, Saint George, UT 84770" oninput="updatePreview()">
 
     <label for="image">Profile Image</label>
     <input type="file" id="imageUpload" accept="image/*">
@@ -48,12 +48,11 @@
     <span id="imageSizeValue">120px</span>
 
     <div class="btn-group">
-        <button onclick="generateSignature()">Generate Signature</button>
-        <button onclick="resetForm()">Reset</button>
+        <button onclick="copySignature()">Copy Signature</button>
     </div>
 
     <h3>Signature Preview:</h3>
-    <div id="preview-box" class="signature-box" style="display: none;">
+    <div id="preview-box" class="signature-box">
         <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
@@ -62,11 +61,11 @@
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
                     <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Jared Uyehara</p>
                     <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Creative Director</p>
+                    <table id="contactInfo"></table>
                 </td>
             </tr>
         </table>
     </div>
-    <button onclick="copySignature()">Copy Signature</button>
 
     <script>
         document.getElementById("imageUpload").addEventListener("change", function(event) {
@@ -81,9 +80,12 @@
             }
         });
 
+        function getInputValue(id) {
+            return document.getElementById(id).value.trim();
+        }
+
         function updatePreviewImage() {
-            const imageUrl = document.getElementById("image").value;
-            document.getElementById("imagePreview").src = imageUrl;
+            document.getElementById("imagePreview").src = getInputValue("image");
         }
 
         function updateImageSize(size) {
@@ -92,14 +94,18 @@
             document.getElementById("imagePreview").style.height = size + "px";
         }
 
-        function generateSignature() {
-            document.getElementById("preview-box").style.display = "block";
+        function updatePreview() {
+            document.getElementById("previewName").textContent = getInputValue("name");
+            document.getElementById("previewTitle").textContent = getInputValue("title");
 
-            document.getElementById("previewName").textContent = document.getElementById("name").value;
-            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+            let contactHTML = "";
+            if (getInputValue("mobile")) contactHTML += `<tr><td>📱</td><td>${getInputValue("mobile")}</td></tr>`;
+            if (getInputValue("phone")) contactHTML += `<tr><td>📞</td><td>${getInputValue("phone")}</td></tr>`;
+            if (getInputValue("email")) contactHTML += `<tr><td>📧</td><td>${getInputValue("email")}</td></tr>`;
+            if (getInputValue("website")) contactHTML += `<tr><td>🌐</td><td>${getInputValue("website")}</td></tr>`;
+            if (getInputValue("address")) contactHTML += `<tr><td>📍</td><td>${getInputValue("address")}</td></tr>`;
 
-            updatePreviewImage();
-            updateImageSize(document.getElementById("imageSize").value);
+            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
         function copySignature() {
