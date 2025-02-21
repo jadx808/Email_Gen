@@ -21,7 +21,7 @@
     <p>Fill in your details below to generate your email signature.</p>
 
     <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="Curtis Reed">
+    <input type="text" id="name" placeholder="Jared Uyehara">
 
     <label for="title">Job Title</label>
     <input type="text" id="title" placeholder="Creative Director">
@@ -38,8 +38,9 @@
     <label for="address">Address</label>
     <input type="text" id="address" placeholder="123 Backnine, Saint George, UT 84770">
 
-    <label for="imageUpload">Upload Profile Image</label>
+    <label for="imageUpload">Profile Image (200x200)</label>
     <input type="file" id="imageUpload" accept="image/*">
+    <input type="text" id="imageURL" placeholder="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
     <input type="hidden" id="imageBase64"> <!-- Stores the Base64 image -->
 
     <div class="btn-group">
@@ -63,7 +64,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById("imageBase64").value = e.target.result;
-                    generateSignature();
+                    updatePreview();
                 };
                 reader.readAsDataURL(file);
             }
@@ -74,14 +75,36 @@
             return input.value.trim() || input.placeholder;
         }
 
+        function updatePreview() {
+            const imageBase64 = document.getElementById("imageBase64").value;
+            const imageUrl = getInputValue("imageURL");
+
+            const image = imageBase64 || imageUrl;
+
+            document.getElementById("signature-preview").innerHTML = generateSignatureHTML(image);
+            document.getElementById("preview-box").style.display = "block";
+        }
+
         function generateSignature() {
+            const imageBase64 = document.getElementById("imageBase64").value;
+            const imageUrl = getInputValue("imageURL");
+
+            const image = imageBase64 || imageUrl;
+
+            document.getElementById("signature-preview").innerHTML = generateSignatureHTML(image);
+            document.getElementById("preview-box").style.display = "block";
+
+            // Store signature in hidden div for proper copy
+            document.getElementById("hidden-copy").innerHTML = generateSignatureHTML(image);
+        }
+
+        function generateSignatureHTML(image) {
             const name = getInputValue("name");
             const title = getInputValue("title");
             const phone = getInputValue("phone");
             const email = getInputValue("email");
             const website = getInputValue("website");
             const address = getInputValue("address");
-            const image = document.getElementById("imageBase64").value || "https://iili.io/2yOuSp4.png";
 
             let contactInfo = `
                 <tr><td><img src='https://cdn-icons-png.flaticon.com/128/3917/3917144.png' width="16" height="16"></td>
@@ -94,11 +117,11 @@
                     <td style="padding-left: 12px;">${address}</td></tr>
             `;
 
-            let signatureHTML = `
+            return `
                 <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; background-color: transparent;">
                     <tr>
                         <td style="padding: 10px; text-align: center;">
-                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; max-width: 400px; display: block; margin: auto;">
+                            <img src='${image}' alt='Profile Image' style="border-radius: 50%; width: 200px; height: 200px; display: block; margin: auto;">
                         </td>
                         <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
                             <p style="font-size: 17px; font-weight: bold; margin: 0;">${name}</p>
@@ -109,12 +132,6 @@
                         </td>
                     </tr>
                 </table>`;
-
-            document.getElementById("signature-preview").innerHTML = signatureHTML;
-            document.getElementById("preview-box").style.display = "block";
-
-            // Store signature in hidden div for proper copy
-            document.getElementById("hidden-copy").innerHTML = signatureHTML;
         }
 
         function copySignature() {
