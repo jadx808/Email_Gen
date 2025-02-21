@@ -154,6 +154,15 @@
             document.getElementById("imagePreview").style.width = document.getElementById("imageSize").value + "px";
             document.getElementById("imagePreview").style.height = document.getElementById("imageSize").value + "px";
             document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
+
+            let contactHTML = `
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${document.getElementById("mobile").value}</td></tr>
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${document.getElementById("phone").value}</td></tr>
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${document.getElementById("email").value}</td></tr>
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${document.getElementById("website").value}</td></tr>
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${document.getElementById("address").value}</td></tr>
+            `;
+            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
         function copySignature() {
