@@ -78,6 +78,15 @@
         function updatePreview() {
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+            
+            let contactHTML = "";
+            contactHTML += document.getElementById("mobile").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${document.getElementById("mobile").value}</td></tr>` : "";
+            contactHTML += document.getElementById("phone").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${document.getElementById("phone").value}</td></tr>` : "";
+            contactHTML += document.getElementById("email").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${document.getElementById("email").value}</td></tr>` : "";
+            contactHTML += document.getElementById("website").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${document.getElementById("website").value}</td></tr>` : "";
+            contactHTML += document.getElementById("address").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${document.getElementById("address").value}</td></tr>` : "";
+            
+            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
     </script>
 </body>
