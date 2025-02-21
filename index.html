@@ -11,7 +11,7 @@
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #88B92E; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
-        .image-preview { display: block; margin: auto; border-radius: 50%; }
+        .image-preview { display: block; margin: auto; border-radius: 50%; transition: width 0.2s ease, height 0.2s ease; }
     </style>
 </head>
 <body>
@@ -41,7 +41,7 @@
 
     <label for="image">Profile Image</label>
     <input type="file" id="imageUpload" accept="image/*">
-    <input type="url" id="image" value="https://iili.io/2yOuSp4.png">
+    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreviewImage()">
 
     <label for="imageSize">Image Size</label>
     <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updateImageSize(this.value)">
@@ -54,7 +54,9 @@
 
     <h3>Signature Preview:</h3>
     <div id="preview-box" class="signature-box" style="display: none;">
-        <div id="signature-preview"></div>
+        <div id="signature-preview">
+            <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
+        </div>
     </div>
     <button onclick="copySignature()">Copy Signature</button>
 
@@ -65,7 +67,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById("image").value = e.target.result;
-                    document.getElementById("imagePreview").src = e.target.result;
+                    updatePreviewImage();
                 };
                 reader.readAsDataURL(file);
             }
@@ -75,8 +77,15 @@
             return document.getElementById(id).value.trim();
         }
 
+        function updatePreviewImage() {
+            const imageUrl = getInputValue("image");
+            document.getElementById("imagePreview").src = imageUrl;
+        }
+
         function updateImageSize(size) {
             document.getElementById("imageSizeValue").textContent = size + "px";
+            document.getElementById("imagePreview").style.width = size + "px";
+            document.getElementById("imagePreview").style.height = size + "px";
         }
 
         function generateSignature() {
@@ -121,7 +130,7 @@
                 <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
                     <tr>
                         <td style="padding: 10px; text-align: center;">
-                            <img src='${image}' id="imagePreview" alt='Profile Image' class="image-preview" style="width: ${imageSize}px; height: ${imageSize}px;">
+                            <img src='${image}' alt='Profile Image' class="image-preview" style="width: ${imageSize}px; height: ${imageSize}px; border-radius: 50%;">
                         </td>
                         <td style="padding: 10px; border-left: 2px solid #99CA3C; padding-left: 18px; text-align: left;">
                             ${name ? `<p style="font-size: 17px; font-weight: bold; margin: 0;">${name}</p>` : ""}
@@ -133,21 +142,6 @@
 
             document.getElementById("signature-preview").innerHTML = signatureHTML;
             document.getElementById("preview-box").style.display = "block";
-        }
-
-        function copySignature() {
-            const copyDiv = document.createElement("div");
-            copyDiv.contentEditable = "true";
-            document.body.appendChild(copyDiv);
-            copyDiv.innerHTML = document.getElementById("signature-preview").innerHTML;
-
-            const range = document.createRange();
-            range.selectNodeContents(copyDiv);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            document.body.removeChild(copyDiv);
-            alert("✅ Signature copied! Paste it into Gmail.");
         }
     </script>
 </body>
