@@ -126,7 +126,7 @@
     </div>
 
     <h3>Signature Preview:</h3>
-    <div id="preview-box" class="signature-box">
+    <div id="preview-box" class="signature-box" contenteditable="true">
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
@@ -144,40 +144,31 @@
     </div>
 
     <script>
-        document.getElementById("imageUpload").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("image").value = e.target.result;
-                    updatePreview();
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+        function updatePreview() {
+            document.getElementById("previewName").textContent = document.getElementById("name").value;
+            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+            document.getElementById("imagePreview").src = document.getElementById("image").value;
+            document.getElementById("imagePreview").style.width = document.getElementById("imageSize").value + "px";
+            document.getElementById("imagePreview").style.height = document.getElementById("imageSize").value + "px";
+            document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
 
-        function getInputValue(id) {
-            return document.getElementById(id).value.trim();
+            let contactHTML = `
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${document.getElementById("mobile").value}</td></tr>
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${document.getElementById("phone").value}</td></tr>
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${document.getElementById("email").value}</td></tr>
+                <tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${document.getElementById("website").value}</td></tr>
+            `;
+            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
-        function updatePreview() {
-            document.getElementById("previewName").textContent = getInputValue("name") || "Your Name";
-            document.getElementById("previewTitle").textContent = getInputValue("title") || "Your Title";
-
-            document.getElementById("imagePreview").src = getInputValue("image");
-            const imageSize = getInputValue("imageSize") + "px";
-            document.getElementById("imagePreview").style.width = imageSize;
-            document.getElementById("imagePreview").style.height = imageSize;
-            document.getElementById("imageSizeValue").textContent = imageSize;
-
-            let contactHTML = "";
-            if (getInputValue("mobile")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${getInputValue("mobile")}</td></tr>`;
-            if (getInputValue("phone")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${getInputValue("phone")}</td></tr>`;
-            if (getInputValue("email")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${getInputValue("email")}</td></tr>`;
-            if (getInputValue("website")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${getInputValue("website")}</td></tr>`;
-            if (getInputValue("address")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${getInputValue("address")}</td></tr>`;
-
-            document.getElementById("contactInfo").innerHTML = contactHTML;
+        function copySignature() {
+            let previewBox = document.getElementById("preview-box");
+            let range = document.createRange();
+            range.selectNodeContents(previewBox);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            alert("✅ Signature copied! Paste it into Gmail.");
         }
     </script>
 </body>
