@@ -44,9 +44,10 @@
     <label for="address">Address</label>
     <input type="text" id="address" value="123 Backnine, Saint George, UT 84770" oninput="updatePreview()">
 
-    <label for="image">Profile Image</label>
+    <label for="image">Profile Image (200x200)</label>
     <input type="file" id="imageUpload" accept="image/*">
     <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
+    <input type="hidden" id="imageBase64"> <!-- Stores Base64 image -->
 
     <label for="imageSize">Image Size</label>
     <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
@@ -73,58 +74,5 @@
             </tr>
         </table>
     </div>
-
-    <script>
-        document.getElementById("imageUpload").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("image").value = e.target.result;
-                    updatePreview();
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function getInputValue(id) {
-            return document.getElementById(id).value.trim();
-        }
-
-        function updatePreview() {
-            document.getElementById("previewName").textContent = getInputValue("name") || "Your Name";
-            document.getElementById("previewTitle").textContent = getInputValue("title") || "Your Title";
-
-            document.getElementById("imagePreview").src = getInputValue("image");
-            const imageSize = getInputValue("imageSize") + "px";
-            document.getElementById("imagePreview").style.width = imageSize;
-            document.getElementById("imagePreview").style.height = imageSize;
-            document.getElementById("imageSizeValue").textContent = imageSize;
-
-            let contactHTML = "";
-            if (getInputValue("mobile")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td><a href="tel:${getInputValue("mobile")}">${getInputValue("mobile")}</a></td></tr>`;
-            if (getInputValue("phone")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td><a href="tel:${getInputValue("phone")}">${getInputValue("phone")}</a></td></tr>`;
-            if (getInputValue("email")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td><a href="mailto:${getInputValue("email")}">${getInputValue("email")}</a></td></tr>`;
-            if (getInputValue("website")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td><a href="${getInputValue("website")}" target="_blank">${getInputValue("website")}</a></td></tr>`;
-            if (getInputValue("address")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${getInputValue("address")}</td></tr>`;
-
-            document.getElementById("contactInfo").innerHTML = contactHTML;
-        }
-
-        function copySignature() {
-            const copyDiv = document.createElement("div");
-            copyDiv.contentEditable = "true";
-            document.body.appendChild(copyDiv);
-            copyDiv.innerHTML = document.getElementById("preview-box").innerHTML;
-
-            const range = document.createRange();
-            range.selectNodeContents(copyDiv);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            document.body.removeChild(copyDiv);
-            alert("✅ Signature copied! Paste it into Gmail.");
-        }
-    </script>
 </body>
 </html>
