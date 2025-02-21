@@ -23,11 +23,11 @@
     <label for="title">Job Title</label>
     <input type="text" id="title" value="Creative Director">
 
-    <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" value="123 456 758">
-
     <label for="mobile">Mobile Number</label>
     <input type="tel" id="mobile" value="987 654 321">
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" value="123 456 758">
 
     <label for="email">Email</label>
     <input type="email" id="email" value="name@thebackninegolf.com">
@@ -72,23 +72,23 @@
         function generateSignature() {
             const name = getInputValue("name");
             const title = getInputValue("title");
-            const phone = getInputValue("phone");
             const mobile = getInputValue("mobile");
+            const phone = getInputValue("phone");
             const email = getInputValue("email");
             const website = getInputValue("website");
             const address = getInputValue("address");
             let image = getInputValue("image");
 
             let contactInfo = "";
-            if (phone) contactInfo += `
-                <tr>
-                    <td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png" width="16" height="16"></td>
-                    <td style="padding-left: 12px;"><a href="tel:${phone}">${phone}</a></td>
-                </tr>`;
             if (mobile) contactInfo += `
                 <tr>
                     <td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png" width="16" height="16"></td>
                     <td style="padding-left: 12px;"><a href="tel:${mobile}">${mobile}</a></td>
+                </tr>`;
+            if (phone) contactInfo += `
+                <tr>
+                    <td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png" width="16" height="16"></td>
+                    <td style="padding-left: 12px;"><a href="tel:${phone}">${phone}</a></td>
                 </tr>`;
             if (email) contactInfo += `
                 <tr>
