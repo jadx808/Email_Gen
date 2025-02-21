@@ -161,15 +161,24 @@
         }
 
         function updatePreview() {
-            // Update Name & Title
             document.getElementById("previewName").textContent = getInputValue("name") || "Your Name";
             document.getElementById("previewTitle").textContent = getInputValue("title") || "Your Title";
 
-            // Update Image
             document.getElementById("imagePreview").src = getInputValue("image");
             const imageSize = getInputValue("imageSize") + "px";
             document.getElementById("imagePreview").style.width = imageSize;
             document.getElementById("imagePreview").style.height = imageSize;
-            document.getElementById("imageSizeValue").textContent = imageSize
-::contentReference[oaicite:0]{index=0}
- 
+            document.getElementById("imageSizeValue").textContent = imageSize;
+
+            let contactHTML = "";
+            if (getInputValue("mobile")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${getInputValue("mobile")}</td></tr>`;
+            if (getInputValue("phone")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${getInputValue("phone")}</td></tr>`;
+            if (getInputValue("email")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${getInputValue("email")}</td></tr>`;
+            if (getInputValue("website")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${getInputValue("website")}</td></tr>`;
+            if (getInputValue("address")) contactHTML += `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${getInputValue("address")}</td></tr>`;
+
+            document.getElementById("contactInfo").innerHTML = contactHTML;
+        }
+    </script>
+</body>
+</html>
