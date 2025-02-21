@@ -25,7 +25,7 @@
     <p>Fill in your details below to generate your email signature.</p>
     
     <label for="name">Full Name</label>
-    <input type="text" id="name" value="Jared Uyehara" oninput="updatePreview()">
+    <input type="text" id="name" value="Name" oninput="updatePreview()">
 
     <label for="title">Job Title</label>
     <input type="text" id="title" value="Creative Director" oninput="updatePreview()">
@@ -75,18 +75,27 @@
         </table>
     </div>
     <script>
+        document.getElementById("imageUpload").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("imageBase64").value = e.target.result;
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
         function updatePreview() {
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+            document.getElementById("imagePreview").src = document.getElementById("imageBase64").value || "https://iili.io/2yOuSp4.png";
             
-            let contactHTML = "";
-            contactHTML += document.getElementById("mobile").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/455/455705.png"></td><td>${document.getElementById("mobile").value}</td></tr>` : "";
-            contactHTML += document.getElementById("phone").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917144.png"></td><td>${document.getElementById("phone").value}</td></tr>` : "";
-            contactHTML += document.getElementById("email").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916632.png"></td><td>${document.getElementById("email").value}</td></tr>` : "";
-            contactHTML += document.getElementById("website").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3917/3917571.png"></td><td>${document.getElementById("website").value}</td></tr>` : "";
-            contactHTML += document.getElementById("address").value ? `<tr><td><img src="https://cdn-icons-png.flaticon.com/128/3916/3916874.png"></td><td>${document.getElementById("address").value}</td></tr>` : "";
-            
-            document.getElementById("contactInfo").innerHTML = contactHTML;
+            const imageSize = document.getElementById("imageSize").value + "px";
+            document.getElementById("imagePreview").style.width = imageSize;
+            document.getElementById("imagePreview").style.height = imageSize;
+            document.getElementById("imageSizeValue").textContent = imageSize;
         }
     </script>
 </body>
