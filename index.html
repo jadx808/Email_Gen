@@ -124,7 +124,6 @@
                     <div class="contact-info-container">
                         <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
                         <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Your Title</p>
-                        <table id="contactInfo" class="info-table"></table>
                     </div>
                 </td>
             </tr>
@@ -157,11 +156,8 @@
 
         function copySignature() {
             let previewBox = document.getElementById("preview-box").cloneNode(true);
-
-            if (base64Image) {
-                let imgTag = previewBox.querySelector("#imagePreview");
-                imgTag.src = base64Image; // Ensure the image is copied as a Base64 inline image
-            }
+            let imgTag = previewBox.querySelector("#imagePreview");
+            if (base64Image) imgTag.src = base64Image;
 
             document.body.appendChild(previewBox);
             let range = document.createRange();
