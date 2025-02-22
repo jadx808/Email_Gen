@@ -102,7 +102,7 @@
     <input type="file" id="imageUpload" accept="image/*">
 
     <label for="imageSize">Image Size</label>
-    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
+    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updateImageSize()">
     <span id="imageSizeValue">120px</span>
 
     <div class="btn-group">
@@ -114,7 +114,7 @@
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
-                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image">
+                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
                     <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
@@ -183,18 +183,11 @@
             document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
-        function copySignature() {
-            let previewBox = document.getElementById("preview-box").cloneNode(true);
-            document.body.appendChild(previewBox);
-
-            let range = document.createRange();
-            range.selectNodeContents(previewBox);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-
-            document.body.removeChild(previewBox);
-            alert("✅ Signature copied! The image is now embedded and should appear in Gmail.");
+        function updateImageSize() {
+            let size = document.getElementById("imageSize").value + "px";
+            document.getElementById("imagePreview").style.width = size;
+            document.getElementById("imagePreview").style.height = size;
+            document.getElementById("imageSizeValue").textContent = size;
         }
     </script>
 </body>
