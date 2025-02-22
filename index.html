@@ -11,7 +11,7 @@
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #88B92E; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
-        .image-preview { display: block; margin: auto; border-radius: 50%; width: 120px; height: 120px; }
+        .image-preview { display: block; margin: auto; border-radius: 50%; transition: width 0.1s ease, height 0.1s ease; }
         .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
         .info-table td { padding: 2px 4px; vertical-align: middle; white-space: nowrap; line-height: 1.1; }
         .info-table img { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; }
@@ -44,6 +44,10 @@
     <label for="image">Profile Image URL</label>
     <input type="url" id="image" oninput="updatePreview()">
     <input type="file" id="imageUpload" accept="image/*">
+
+    <label for="imageSize">Image Size</label>
+    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
+    <span id="imageSizeValue">120px</span>
 
     <div class="btn-group">
         <button onclick="copySignature()">Copy Signature</button>
@@ -101,6 +105,9 @@
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
             document.getElementById("imagePreview").src = document.getElementById("image").value;
+            document.getElementById("imagePreview").style.width = document.getElementById("imageSize").value + "px";
+            document.getElementById("imagePreview").style.height = document.getElementById("imageSize").value + "px";
+            document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
         }
 
         function copySignature() {
