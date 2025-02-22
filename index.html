@@ -127,7 +127,7 @@
 
     <script>
         let hostedImageUrl = "https://iili.io/2yOuSp4.png"; // Default placeholder
-        const freeImageApiKey = "6d207e02198a847aa98d0a2a901485a5"; // FreeImage.host API Key
+        const imgbbApiKey = "YOUR_IMGBB_API_KEY"; // Replace with your ImgBB API Key
 
         document.getElementById("imageUpload").addEventListener("change", async function(event) {
             const file = event.target.files[0];
@@ -136,20 +136,19 @@
                 reader.onload = async function(e) {
                     let base64Image = e.target.result.split(",")[1]; // Extract Base64 content
                     
-                    // Upload image to FreeImage.host
+                    // Upload image to ImgBB
                     let formData = new FormData();
-                    formData.append("key", freeImageApiKey);
-                    formData.append("source", file);
-                    formData.append("format", "json");
+                    formData.append("key", imgbbApiKey);
+                    formData.append("image", base64Image);
 
                     try {
-                        let response = await fetch("https://freeimage.host/api/1/upload", {
+                        let response = await fetch("https://api.imgbb.com/1/upload", {
                             method: "POST",
                             body: formData
                         });
                         let result = await response.json();
-                        if (result.status_code === 200) {
-                            hostedImageUrl = result.image.url;
+                        if (result.success) {
+                            hostedImageUrl = result.data.url;
                             document.getElementById("imagePreview").src = hostedImageUrl;
                             document.getElementById("image").value = hostedImageUrl;
                             updatePreview();
