@@ -187,6 +187,14 @@
 
             document.getElementById("contactInfo").innerHTML = contactHTML;
         }
+
+        function copySignature() {
+            navigator.clipboard.writeText(document.getElementById("preview-box").outerHTML).then(() => {
+                alert("Signature copied! Paste it into Gmail.");
+            }).catch(() => {
+                alert("Failed to copy. Try manually selecting and copying.");
+            });
+        }
     </script>
 </body>
 </html>
