@@ -131,45 +131,50 @@
     </div>
 
     <script>
-        let base64Image = "";
+        async function uploadImage(file) {
+            let formData = new FormData();
+            formData.append("source", file);
+            formData.append("type", "file");
 
-        document.getElementById("imageUpload").addEventListener("change", function(event) {
+            try {
+                let response = await fetch("https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5", {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+                if (result.status_code === 200) {
+                    return result.image.url;
+                } else {
+                    alert("❌ Image upload failed. Please try again.");
+                    return null;
+                }
+            } catch (error) {
+                alert("❌ Network error. Check your internet connection.");
+                return null;
+            }
+        }
+
+        document.getElementById("imageUpload").addEventListener("change", async function(event) {
             const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    base64Image = e.target.result;
-                    document.getElementById("imagePreview").src = base64Image;
+                let imageUrl = await uploadImage(file);
+                if (imageUrl) {
+                    document.getElementById("imagePreview").src = imageUrl;
+                    document.getElementById("image").value = imageUrl;
                     updatePreview();
-                };
-                reader.readAsDataURL(file);
+                }
             }
         });
 
         function updatePreview() {
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
-
             let imgElement = document.getElementById("imagePreview");
-            imgElement.src = base64Image || document.getElementById("image").value;
+            imgElement.src = document.getElementById("image").value;
             imgElement.style.width = document.getElementById("imageSize").value + "px";
             imgElement.style.height = document.getElementById("imageSize").value + "px";
             document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
-
-            let contactHTML = "";
-            function addContactRow(icon, value) {
-                if (value.trim()) {
-                    contactHTML += `<tr><td><img src="${icon}"></td><td>${value}</td></tr>`;
-                }
-            }
-
-            addContactRow("https://cdn-icons-png.flaticon.com/128/455/455705.png", document.getElementById("mobile").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917144.png", document.getElementById("phone").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916632.png", document.getElementById("email").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917571.png", document.getElementById("website").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916874.png", document.getElementById("address").value);
-
-            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
         function copySignature() {
