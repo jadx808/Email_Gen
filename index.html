@@ -1,52 +1,170 @@
-<script>
-    let base64Image = "";
-
-    document.getElementById("imageUpload").addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                base64Image = e.target.result;
-                document.getElementById("imagePreview").src = base64Image;
-                autoDownloadImage(base64Image);
-                updatePreview();
-            };
-            reader.readAsDataURL(file);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back Nine Golf Email Signature Generator</title>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+            background-color: transparent;
         }
-    });
+        label {
+            display: block;
+            margin-top: 4px;
+            font-weight: bold;
+            text-align: left;
+            font-size: 13px;
+        }
+        input, select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 2px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+        button {
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #99CA3C;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #88B92E;
+        }
+        .signature-box {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            text-align: left;
+        }
+        .image-preview {
+            display: block;
+            margin: auto;
+            border-radius: 50%;
+            transition: width 0.1s ease, height 0.1s ease;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        .info-table td {
+            padding: 2px 4px;
+            vertical-align: middle;
+            white-space: nowrap;
+            line-height: 1.1;
+        }
+        .info-table img {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Back Nine Golf Email Signature Generator</h2>
+    <p>Fill in your details below to generate your email signature.</p>
+    
+    <label for="name">Full Name</label>
+    <input type="text" id="name" value="Your Name" oninput="updatePreview()">
 
-    function autoDownloadImage(base64) {
-        const link = document.createElement("a");
-        link.href = base64;
-        link.download = "email-signature-image.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        alert("✅ Image saved! After pasting your signature into Gmail, drag the downloaded image into the email.");
-    }
+    <label for="title">Job Title</label>
+    <input type="text" id="title" value="Your Title" oninput="updatePreview()">
 
-    function updatePreview() {
-        document.getElementById("previewName").textContent = document.getElementById("name").value;
-        document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+    <label for="mobile">Mobile Number</label>
+    <input type="tel" id="mobile" oninput="updatePreview()">
 
-        let imgElement = document.getElementById("imagePreview");
-        imgElement.src = base64Image || document.getElementById("image").value;
-        imgElement.style.width = document.getElementById("imageSize").value + "px";
-        imgElement.style.height = document.getElementById("imageSize").value + "px";
-        document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
-    }
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" oninput="updatePreview()">
 
-    function copySignature() {
-        let previewBox = document.getElementById("preview-box").cloneNode(true);
-        document.body.appendChild(previewBox);
+    <label for="email">Email</label>
+    <input type="email" id="email" oninput="updatePreview()">
 
-        let range = document.createRange();
-        range.selectNodeContents(previewBox);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand("copy");
+    <label for="website">Website</label>
+    <input type="url" id="website" oninput="updatePreview()">
 
-        document.body.removeChild(previewBox);
-        alert("✅ Signature copied! Now paste it into Gmail and **drag the downloaded image into the email**.");
-    }
-</script>
+    <label for="address">Address</label>
+    <input type="text" id="address" oninput="updatePreview()">
+
+    <label for="image">Profile Image URL</label>
+    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
+    <input type="file" id="imageUpload" accept="image/*">
+
+    <label for="imageSize">Image Size</label>
+    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
+    <span id="imageSizeValue">120px</span>
+
+    <div class="btn-group">
+        <button onclick="copySignature()">Copy Signature</button>
+    </div>
+
+    <h3>Signature Preview:</h3>
+    <div id="preview-box" class="signature-box">
+        <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
+            <tr>
+                <td style="padding: 10px; text-align: center;">
+                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image">
+                </td>
+                <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
+                    <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
+                    <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Your Title</p>
+                    <table id="contactInfo" class="info-table"></table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        let base64Image = "";
+
+        document.getElementById("imageUpload").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64Image = e.target.result;
+                    document.getElementById("imagePreview").src = base64Image;
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updatePreview() {
+            document.getElementById("previewName").textContent = document.getElementById("name").value;
+            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+
+            let imgElement = document.getElementById("imagePreview");
+            imgElement.src = base64Image || document.getElementById("image").value;
+            imgElement.style.width = document.getElementById("imageSize").value + "px";
+            imgElement.style.height = document.getElementById("imageSize").value + "px";
+            document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
+        }
+
+        function copySignature() {
+            let previewBox = document.getElementById("preview-box").cloneNode(true);
+            document.body.appendChild(previewBox);
+
+            let range = document.createRange();
+            range.selectNodeContents(previewBox);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+
+            document.body.removeChild(previewBox);
+            alert("✅ Signature copied! If the image doesn’t show up in Gmail, manually drag and drop the uploaded image.");
+        }
+    </script>
+</body>
+</html>
