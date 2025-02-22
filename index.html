@@ -181,13 +181,11 @@
             document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
-        function copySignature() {
-            let range = document.createRange();
-            range.selectNode(document.getElementById("preview-box"));
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            alert("✅ Signature copied! Paste it into Gmail.");
+        function updateImageSize() {
+            let size = document.getElementById("imageSize").value + "px";
+            document.getElementById("imagePreview").style.width = size;
+            document.getElementById("imagePreview").style.height = size;
+            document.getElementById("imageSizeValue").textContent = size;
         }
     </script>
 </body>
