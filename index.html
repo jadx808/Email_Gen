@@ -1,21 +1,144 @@
-<script>
-    let hostedImageUrl = "https://iili.io/2yOuSp4.png"; // Default placeholder
-    const imgbbApiKey = "f77ae13d7081299400e095b020a1dcd5"; // ✅ Your actual API key
-
-    document.getElementById("imageUpload").addEventListener("change", async function(event) {
-        const file = event.target.files[0];
-        if (!file) {
-            alert("No file selected.");
-            return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back Nine Golf Email Signature Generator</title>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+            background-color: transparent;
         }
+        label {
+            display: block;
+            margin-top: 4px;
+            font-weight: bold;
+            text-align: left;
+            font-size: 13px;
+        }
+        input, select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 2px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+        button {
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #99CA3C;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #88B92E;
+        }
+        .signature-box {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            text-align: left;
+        }
+        .image-preview {
+            display: block;
+            margin: auto;
+            border-radius: 50%;
+            transition: width 0.1s ease, height 0.1s ease;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        .info-table td {
+            padding: 2px 4px;
+            vertical-align: middle;
+            white-space: nowrap;
+            line-height: 1.1;
+        }
+        .info-table img {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Back Nine Golf Email Signature Generator</h2>
+    <p>Fill in your details below to generate your email signature.</p>
+    
+    <label for="name">Full Name</label>
+    <input type="text" id="name" value="Your Name" oninput="updatePreview()">
 
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            let base64Image = e.target.result.split(",")[1]; // Extract Base64 content
+    <label for="title">Job Title</label>
+    <input type="text" id="title" value="Your Title" oninput="updatePreview()">
+
+    <label for="mobile">Mobile Number</label>
+    <input type="tel" id="mobile" oninput="updatePreview()">
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" oninput="updatePreview()">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" oninput="updatePreview()">
+
+    <label for="website">Website</label>
+    <input type="url" id="website" oninput="updatePreview()">
+
+    <label for="address">Address</label>
+    <input type="text" id="address" oninput="updatePreview()">
+
+    <label for="image">Profile Image URL</label>
+    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
+    <input type="file" id="imageUpload" accept="image/*">
+
+    <label for="imageSize">Image Size</label>
+    <input type="range" id="imageSize" min="50" max="200" value="120" oninput="updatePreview()">
+    <span id="imageSizeValue">120px</span>
+
+    <div class="btn-group">
+        <button onclick="copySignature()">Copy Signature</button>
+    </div>
+
+    <h3>Signature Preview:</h3>
+    <div id="preview-box" class="signature-box">
+        <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
+            <tr>
+                <td style="padding: 10px; text-align: center;">
+                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image">
+                </td>
+                <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
+                    <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
+                    <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Your Title</p>
+                    <table id="contactInfo" class="info-table"></table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        let hostedImageUrl = "https://iili.io/2yOuSp4.png"; // Default placeholder
+        const imgbbApiKey = "f77ae13d7081299400e095b020a1dcd5"; // ✅ Your actual API key
+
+        document.getElementById("imageUpload").addEventListener("change", async function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                alert("No file selected.");
+                return;
+            }
 
             let formData = new FormData();
             formData.append("key", imgbbApiKey);
-            formData.append("image", base64Image);
+            formData.append("image", file); // Upload actual file instead of Base64
 
             try {
                 let response = await fetch("https://api.imgbb.com/1/upload", {
@@ -24,10 +147,10 @@
                 });
 
                 let result = await response.json();
-                console.log("ImgBB Response:", result); // Debugging
+                console.log("ImgBB Response:", result);
 
                 if (result.success) {
-                    hostedImageUrl = result.data.url; // Get the uploaded image URL
+                    hostedImageUrl = result.data.url; // Get uploaded image URL
                     document.getElementById("imagePreview").src = hostedImageUrl;
                     document.getElementById("image").value = hostedImageUrl;
                     updatePreview();
@@ -38,32 +161,32 @@
                 console.error("Image upload error:", error);
                 alert("Failed to upload image. Check API key and internet connection.");
             }
-        };
-        reader.readAsDataURL(file);
-    });
+        });
 
-    function updatePreview() {
-        document.getElementById("previewName").textContent = document.getElementById("name").value;
-        document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+        function updatePreview() {
+            document.getElementById("previewName").textContent = document.getElementById("name").value;
+            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
 
-        let imgElement = document.getElementById("imagePreview");
-        imgElement.src = hostedImageUrl;
-        imgElement.style.width = document.getElementById("imageSize").value + "px";
-        imgElement.style.height = document.getElementById("imageSize").value + "px";
-        document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
-    }
+            let imgElement = document.getElementById("imagePreview");
+            imgElement.src = hostedImageUrl;
+            imgElement.style.width = document.getElementById("imageSize").value + "px";
+            imgElement.style.height = document.getElementById("imageSize").value + "px";
+            document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
+        }
 
-    function copySignature() {
-        let previewBox = document.getElementById("preview-box").cloneNode(true);
-        document.body.appendChild(previewBox);
+        function copySignature() {
+            let previewBox = document.getElementById("preview-box").cloneNode(true);
+            document.body.appendChild(previewBox);
 
-        let range = document.createRange();
-        range.selectNodeContents(previewBox);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand("copy");
+            let range = document.createRange();
+            range.selectNodeContents(previewBox);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
 
-        document.body.removeChild(previewBox);
-        alert("✅ Signature copied! The image is now embedded and should appear in Gmail.");
-    }
-</script>
+            document.body.removeChild(previewBox);
+            alert("✅ Signature copied! The image is now embedded and should appear in Gmail.");
+        }
+    </script>
+</body>
+</html>
