@@ -59,16 +59,16 @@
             margin-top: 5px;
         }
         .info-table td {
-            padding: 2px 4px;
+            padding: 4px;
             vertical-align: middle;
             white-space: nowrap;
             line-height: 1.1;
         }
         .info-table img {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             vertical-align: middle;
-            margin-right: 4px;
+            margin-right: 6px;
         }
     </style>
 </head>
@@ -126,8 +126,8 @@
     </div>
 
     <script>
-        let hostedImageUrl = "https://iili.io/2yOuSp4.png"; // Default placeholder
-        const imgbbApiKey = "f77ae13d7081299400e095b020a1dcd5"; // ✅ Your actual API key
+        let hostedImageUrl = "https://iili.io/2yOuSp4.png"; 
+        const imgbbApiKey = "f77ae13d7081299400e095b020a1dcd5"; 
 
         document.getElementById("imageUpload").addEventListener("change", async function(event) {
             const file = event.target.files[0];
@@ -138,7 +138,7 @@
 
             let formData = new FormData();
             formData.append("key", imgbbApiKey);
-            formData.append("image", file); // Upload actual file instead of Base64
+            formData.append("image", file); 
 
             try {
                 let response = await fetch("https://api.imgbb.com/1/upload", {
@@ -150,7 +150,7 @@
                 console.log("ImgBB Response:", result);
 
                 if (result.success) {
-                    hostedImageUrl = result.data.url; // Get uploaded image URL
+                    hostedImageUrl = result.data.url; 
                     document.getElementById("imagePreview").src = hostedImageUrl;
                     document.getElementById("image").value = hostedImageUrl;
                     updatePreview();
@@ -167,11 +167,20 @@
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
 
-            let imgElement = document.getElementById("imagePreview");
-            imgElement.src = hostedImageUrl;
-            imgElement.style.width = document.getElementById("imageSize").value + "px";
-            imgElement.style.height = document.getElementById("imageSize").value + "px";
-            document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
+            let contactHTML = "";
+            function addContactRow(icon, value) {
+                if (value.trim()) {
+                    contactHTML += `<tr><td><img src="${icon}"></td><td>${value}</td></tr>`;
+                }
+            }
+
+            addContactRow("https://cdn-icons-png.flaticon.com/128/455/455705.png", document.getElementById("mobile").value);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917144.png", document.getElementById("phone").value);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916632.png", document.getElementById("email").value);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917571.png", document.getElementById("website").value);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916874.png", document.getElementById("address").value);
+
+            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
         function copySignature() {
