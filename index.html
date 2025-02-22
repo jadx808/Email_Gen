@@ -12,15 +12,34 @@
         button:hover { background-color: #88B92E; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
         .image-preview { display: block; margin: auto; border-radius: 50%; transition: width 0.1s ease, height 0.1s ease; }
+        .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        .info-table td { padding: 2px 4px; vertical-align: middle; white-space: nowrap; line-height: 1.1; }
+        .info-table img { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; }
     </style>
 </head>
 <body>
     <h2>Back Nine Golf Email Signature Generator</h2>
+    
     <label for="name">Full Name</label>
     <input type="text" id="name" oninput="updatePreview()">
 
     <label for="title">Job Title</label>
     <input type="text" id="title" oninput="updatePreview()">
+
+    <label for="mobile">Mobile Number</label>
+    <input type="tel" id="mobile" oninput="updatePreview()">
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" oninput="updatePreview()">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" oninput="updatePreview()">
+
+    <label for="website">Website</label>
+    <input type="url" id="website" oninput="updatePreview()">
+
+    <label for="address">Address</label>
+    <input type="text" id="address" oninput="updatePreview()">
 
     <label for="image">Profile Image URL</label>
     <input type="url" id="image" oninput="updatePreview()">
@@ -31,10 +50,19 @@
     </div>
 
     <h3>Signature Preview:</h3>
-    <div id="preview-box">
-        <p id="previewName"></p>
-        <p id="previewTitle"></p>
-        <img id="imagePreview" src="" style="width:100px; height:100px;">
+    <div id="preview-box" class="signature-box">
+        <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
+            <tr>
+                <td style="padding: 10px; text-align: center;">
+                    <img id="imagePreview" class="image-preview" src="" alt="Profile Image" style="width: 120px; height: 120px;">
+                </td>
+                <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
+                    <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;"></p>
+                    <p id="previewTitle" style="font-size: 15px; margin: 2px 0;"></p>
+                    <table id="contactInfo" class="info-table"></table>
+                </td>
+            </tr>
+        </table>
     </div>
 
     <script>
