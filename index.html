@@ -167,24 +167,30 @@
             document.getElementById("contactInfo").innerHTML = contactHTML;
         }
 
-        function copySignature() {
+        async function copySignature() {
             let previewBox = document.getElementById("preview-box").cloneNode(true);
             let img = previewBox.querySelector("img");
 
-            // Embed Base64 Image
             if (base64Image) {
                 img.src = base64Image;
             }
 
             document.body.appendChild(previewBox);
-            let range = document.createRange();
-            range.selectNodeContents(previewBox);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            document.body.removeChild(previewBox);
 
-            alert("✅ Signature copied! Paste it into Gmail.");
+            try {
+                let blob = new Blob([previewBox.outerHTML], { type: "text/html" });
+                let clipboardData = [new ClipboardItem({ "text/html": blob })];
+
+                let imageBlob = await fetch(base64Image).then(res => res.blob());
+                clipboardData.push(new ClipboardItem({ "image/png": imageBlob }));
+
+                await navigator.clipboard.write(clipboardData);
+                alert("✅ Signature copied! Try pasting it into Gmail.");
+            } catch (error) {
+                alert("❌ Copy failed. Try manually pasting the image.");
+            }
+
+            document.body.removeChild(previewBox);
         }
     </script>
 </body>
