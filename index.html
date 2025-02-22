@@ -115,7 +115,7 @@
     </div>
 
     <h3>Signature Preview:</h3>
-    <div id="preview-box" class="signature-box" contenteditable="true">
+    <div id="preview-box" class="signature-box">
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
@@ -170,6 +170,20 @@
             addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916874.png", document.getElementById("address").value);
 
             document.getElementById("contactInfo").innerHTML = contactHTML;
+        }
+
+        function copySignature() {
+            let previewBox = document.getElementById("preview-box").cloneNode(true);
+            document.body.appendChild(previewBox);
+
+            let range = document.createRange();
+            range.selectNodeContents(previewBox);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+
+            document.body.removeChild(previewBox);
+            alert("✅ Signature copied! Paste it into Gmail.");
         }
     </script>
 </body>
