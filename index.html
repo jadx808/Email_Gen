@@ -11,7 +11,7 @@
         button { margin-top: 8px; padding: 8px; background-color: #99CA3C; border: none; color: white; font-size: 14px; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #88B92E; }
         .signature-box { padding: 10px; border: 1px solid #ddd; background: #fff; text-align: left; }
-        .image-preview { display: block; margin: auto; border-radius: 50%; transition: width 0.1s ease, height 0.1s ease; }
+        .image-preview { display: block; margin: auto; border-radius: 50%; width: 120px; height: 120px; }
         .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
         .info-table td { padding: 2px 4px; vertical-align: middle; white-space: nowrap; line-height: 1.1; }
         .info-table img { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; }
@@ -54,7 +54,7 @@
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
-                    <img id="imagePreview" class="image-preview" src="" alt="Profile Image" style="width: 120px; height: 120px;">
+                    <img id="imagePreview" class="image-preview" src="" alt="Profile Image">
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
                     <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;"></p>
@@ -78,7 +78,7 @@
 
             let result = await response.json();
             if (result.status_code === 200) {
-                return result.image.url; // Get the direct image URL
+                return result.image.url; 
             } else {
                 alert("❌ Image upload failed. Please try again.");
                 return null;
