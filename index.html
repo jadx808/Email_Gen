@@ -147,7 +147,6 @@
                 });
 
                 let result = await response.json();
-                console.log("ImgBB Response:", result);
 
                 if (result.success) {
                     hostedImageUrl = result.data.url; 
@@ -158,7 +157,6 @@
                     alert("Image upload failed. Error: " + result.error.message);
                 }
             } catch (error) {
-                console.error("Image upload error:", error);
                 alert("Failed to upload image. Check API key and internet connection.");
             }
         });
@@ -188,6 +186,14 @@
             document.getElementById("imagePreview").style.width = size;
             document.getElementById("imagePreview").style.height = size;
             document.getElementById("imageSizeValue").textContent = size;
+        }
+
+        function copySignature() {
+            navigator.clipboard.writeText(document.getElementById("preview-box").outerHTML).then(() => {
+                alert("✅ Signature copied! Paste it into Gmail.");
+            }).catch(err => {
+                alert("Copy failed. Try manually selecting and copying.");
+            });
         }
     </script>
 </body>
