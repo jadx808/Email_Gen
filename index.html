@@ -126,25 +126,40 @@
     </div>
 
     <script>
-        function updatePreview() {
-            document.getElementById("previewName").textContent = document.getElementById("name").value;
-            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+        let hostedImageUrl = "https://iili.io/2yOuSp4.png"; 
+        const imgbbApiKey = "f77ae13d7081299400e095b020a1dcd5"; 
 
-            let contactHTML = "";
-            function addContactRow(icon, value) {
-                if (value.trim()) {
-                    contactHTML += `<tr><td><img src="${icon}"></td><td>${value}</td></tr>`;
-                }
+        document.getElementById("imageUpload").addEventListener("change", async function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                alert("No file selected.");
+                return;
             }
 
-            addContactRow("https://cdn-icons-png.flaticon.com/128/455/455705.png", document.getElementById("mobile").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917144.png", document.getElementById("phone").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916632.png", document.getElementById("email").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917571.png", document.getElementById("website").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916874.png", document.getElementById("address").value);
+            let formData = new FormData();
+            formData.append("key", imgbbApiKey);
+            formData.append("image", file); 
 
-            document.getElementById("contactInfo").innerHTML = contactHTML;
-        }
+            try {
+                let response = await fetch("https://api.imgbb.com/1/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+
+                if (result.success) {
+                    hostedImageUrl = result.data.url; 
+                    document.getElementById("imagePreview").src = hostedImageUrl;
+                    document.getElementById("image").value = hostedImageUrl;
+                    updatePreview();
+                } else {
+                    alert("Image upload failed. Error: " + result.error.message);
+                }
+            } catch (error) {
+                alert("Failed to upload image. Check API key and internet connection.");
+            }
+        });
 
         function updateImageSize() {
             let size = document.getElementById("imageSize").value + "px";
@@ -154,7 +169,9 @@
         }
 
         function copySignature() {
-            let previewBox = document.getElementById("preview-box");
+            let previewBox = document.getElementById("preview-box").cloneNode(true);
+            document.body.appendChild(previewBox);
+            
             let range = document.createRange();
             range.selectNodeContents(previewBox);
             let selection = window.getSelection();
@@ -169,6 +186,7 @@
             }
 
             selection.removeAllRanges();
+            document.body.removeChild(previewBox);
         }
     </script>
 </body>
