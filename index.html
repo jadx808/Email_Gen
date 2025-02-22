@@ -138,7 +138,7 @@
 
             let formData = new FormData();
             formData.append("key", imgbbApiKey);
-            formData.append("image", file); 
+            formData.append("image", file);
 
             try {
                 let response = await fetch("https://api.imgbb.com/1/upload", {
@@ -168,25 +168,24 @@
             document.getElementById("imageSizeValue").textContent = size;
         }
 
-        function copySignature() {
-            let previewBox = document.getElementById("preview-box").cloneNode(true);
-            document.body.appendChild(previewBox);
-            
-            let range = document.createRange();
-            range.selectNodeContents(previewBox);
-            let selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
+        function updatePreview() {
+            document.getElementById("previewName").textContent = document.getElementById("name").value;
+            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
 
-            try {
-                document.execCommand("copy");
-                alert("✅ Signature copied! Paste it into Gmail.");
-            } catch (err) {
-                alert("❌ Copy failed. Try manually selecting and copying.");
+            let contactHTML = "";
+            function addContactRow(icon, value) {
+                if (value.trim()) {
+                    contactHTML += `<tr><td><img src="${icon}"></td><td>${value}</td></tr>`;
+                }
             }
 
-            selection.removeAllRanges();
-            document.body.removeChild(previewBox);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/455/455705.png", document.getElementById("mobile").value);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917144.png", document.getElementById("phone").value);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916632.png", document.getElementById("email").value);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917571.png", document.getElementById("website").value);
+            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916874.png", document.getElementById("address").value);
+
+            document.getElementById("contactInfo").innerHTML = contactHTML;
         }
     </script>
 </body>
