@@ -122,11 +122,9 @@
                     <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image" style="width: 120px; height: 120px;">
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
-                    <div class="contact-info-container">
-                        <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
-                        <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Your Title</p>
-                        <table id="contactInfo" class="info-table"></table>
-                    </div>
+                    <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
+                    <p id="previewTitle" style="font-size: 15px; margin: 2px 0;">Your Title</p>
+                    <table id="contactInfo" class="info-table"></table>
                 </td>
             </tr>
         </table>
@@ -152,9 +150,6 @@
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
             document.getElementById("imagePreview").src = base64Image || document.getElementById("image").value;
-            document.getElementById("imagePreview").style.width = document.getElementById("imageSize").value + "px";
-            document.getElementById("imagePreview").style.height = document.getElementById("imageSize").value + "px";
-            document.getElementById("imageSizeValue").textContent = document.getElementById("imageSize").value + "px";
 
             let contactHTML = "";
             function addContactRow(icon, value) {
