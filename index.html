@@ -126,41 +126,6 @@
     </div>
 
     <script>
-        let hostedImageUrl = "https://iili.io/2yOuSp4.png"; 
-        const imgbbApiKey = "f77ae13d7081299400e095b020a1dcd5"; 
-
-        document.getElementById("imageUpload").addEventListener("change", async function(event) {
-            const file = event.target.files[0];
-            if (!file) {
-                alert("No file selected.");
-                return;
-            }
-
-            let formData = new FormData();
-            formData.append("key", imgbbApiKey);
-            formData.append("image", file);
-
-            try {
-                let response = await fetch("https://api.imgbb.com/1/upload", {
-                    method: "POST",
-                    body: formData
-                });
-
-                let result = await response.json();
-
-                if (result.success) {
-                    hostedImageUrl = result.data.url; 
-                    document.getElementById("imagePreview").src = hostedImageUrl;
-                    document.getElementById("image").value = hostedImageUrl;
-                    updatePreview();
-                } else {
-                    alert("Image upload failed. Error: " + result.error.message);
-                }
-            } catch (error) {
-                alert("Failed to upload image. Check API key and internet connection.");
-            }
-        });
-
         function updateImageSize() {
             let size = document.getElementById("imageSize").value + "px";
             document.getElementById("imagePreview").style.width = size;
@@ -189,11 +154,23 @@
         }
 
         function copySignature() {
-            navigator.clipboard.writeText(document.getElementById("preview-box").outerHTML).then(() => {
+            let previewBox = document.getElementById("preview-box").cloneNode(true);
+            document.body.appendChild(previewBox);
+
+            let range = document.createRange();
+            range.selectNodeContents(previewBox);
+            let selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            try {
+                document.execCommand("copy");
                 alert("Signature copied! Paste it into Gmail.");
-            }).catch(() => {
+            } catch (err) {
                 alert("Failed to copy. Try manually selecting and copying.");
-            });
+            }
+
+            document.body.removeChild(previewBox);
         }
     </script>
 </body>
