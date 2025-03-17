@@ -51,7 +51,7 @@
             display: block;
             margin: auto;
             border-radius: 50%;
-            transition: width 0.1s ease, height 0.1s ease;
+            object-fit: cover;
         }
         .info-table {
             width: 100%;
@@ -130,8 +130,9 @@
 
         function updateImageSize() {
             let size = document.getElementById("imageSize").value + "px";
-            document.getElementById("imagePreview").style.width = size;
-            document.getElementById("imagePreview").style.height = size;
+            let img = document.getElementById("imagePreview");
+            img.style.width = size;
+            img.style.height = size;
             document.getElementById("imageSizeValue").textContent = size;
         }
 
@@ -147,23 +148,15 @@
                 
                 img.onload = async function() {
                     const maxSize = 200;
-                    let width = img.width;
-                    let height = img.height;
-                    
-                    if (width > maxSize || height > maxSize) {
-                        if (width > height) {
-                            height *= maxSize / width;
-                            width = maxSize;
-                        } else {
-                            width *= maxSize / height;
-                            height = maxSize;
-                        }
-                    }
-                    
                     const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    
+                    const scale = Math.min(maxSize / img.width, maxSize / img.height);
+                    const width = img.width * scale;
+                    const height = img.height * scale;
+                    
                     canvas.width = width;
                     canvas.height = height;
-                    const ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0, width, height);
                     
                     canvas.toBlob(async function(blob) {
