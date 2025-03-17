@@ -128,14 +128,6 @@
     </div>
 
     <script>
-        function updateImageSize() {
-            let size = document.getElementById("imageSize").value + "px";
-            let img = document.getElementById("imagePreview");
-            img.style.width = size;
-            img.style.height = size;
-            document.getElementById("imageSizeValue").textContent = size;
-        }
-
         async function uploadImage() {
             const file = document.getElementById("imageUpload").files[0];
             if (!file) return;
@@ -150,12 +142,25 @@
                     body: formData
                 });
                 const data = await response.json();
-                document.getElementById("image").value = data.data.url;
-                document.getElementById("imagePreview").src = data.data.url;
-                updateImageSize();
+                if (data.success) {
+                    document.getElementById("image").value = data.data.url;
+                    document.getElementById("imagePreview").src = data.data.url;
+                    updateImageSize();
+                }
             } catch (error) {
                 alert("Failed to upload image. Check API key and connection.");
             }
+        }
+
+        function copySignature() {
+            let previewBox = document.getElementById("preview-box");
+            let range = document.createRange();
+            range.selectNodeContents(previewBox);
+            let selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand("copy");
+            alert("Signature copied! Paste it into Gmail.");
         }
     </script>
 </body>
