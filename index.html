@@ -51,7 +51,7 @@
             display: block;
             margin: auto;
             border-radius: 50%;
-            object-fit: cover;
+            object-fit: contain;
         }
         .info-table {
             width: 100%;
@@ -126,55 +126,12 @@
     </div>
 
     <script>
-        const API_KEY = "f77ae13d7081299400e095b020a1dcd5";
-
         function updateImageSize() {
             let size = document.getElementById("imageSize").value + "px";
             let img = document.getElementById("imagePreview");
             img.style.width = size;
             img.style.height = size;
             document.getElementById("imageSizeValue").textContent = size;
-        }
-
-        async function uploadImage() {
-            const file = document.getElementById("imageUpload").files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async function(event) {
-                const img = new Image();
-                img.src = event.target.result;
-                
-                img.onload = async function() {
-                    const maxSize = 200;
-                    const canvas = document.createElement("canvas");
-                    const ctx = canvas.getContext("2d");
-                    
-                    const scale = Math.min(maxSize / img.width, maxSize / img.height);
-                    const width = img.width * scale;
-                    const height = img.height * scale;
-                    
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    canvas.toBlob(async function(blob) {
-                        const formData = new FormData();
-                        formData.append("image", blob, "resized.png");
-                        formData.append("key", API_KEY);
-                        
-                        try {
-                            const response = await fetch("https://api.imgbb.com/1/upload", { method: "POST", body: formData });
-                            const data = await response.json();
-                            document.getElementById("image").value = data.data.url;
-                            document.getElementById("imagePreview").src = data.data.url;
-                        } catch (error) {
-                            alert("Failed to upload image. Check API key and connection.");
-                        }
-                    }, "image/png");
-                };
-            };
         }
     </script>
 </body>
