@@ -128,22 +128,12 @@
     </div>
 
     <script>
-        function updatePreview() {
-            document.getElementById("previewName").textContent = document.getElementById("name").value;
-            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
-            
-            let contactHTML = "";
-            function addContactRow(icon, value) {
-                if (value.trim()) {
-                    contactHTML += `<tr><td><img src="${icon}"></td><td>${value}</td></tr>`;
-                }
-            }
-            addContactRow("https://cdn-icons-png.flaticon.com/128/455/455705.png", document.getElementById("mobile").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917144.png", document.getElementById("phone").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916632.png", document.getElementById("email").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3917/3917571.png", document.getElementById("website").value);
-            addContactRow("https://cdn-icons-png.flaticon.com/128/3916/3916874.png", document.getElementById("address").value);
-            document.getElementById("contactInfo").innerHTML = contactHTML;
+        function updateImageSize() {
+            let size = document.getElementById("imageSize").value + "px";
+            let img = document.getElementById("imagePreview");
+            img.style.width = size;
+            img.style.height = size;
+            document.getElementById("imageSizeValue").textContent = size;
         }
 
         async function uploadImage() {
@@ -160,11 +150,9 @@
                     body: formData
                 });
                 const data = await response.json();
-                if (data.success) {
-                    document.getElementById("image").value = data.data.url;
-                    document.getElementById("imagePreview").src = data.data.url;
-                    updateImageSize();
-                }
+                document.getElementById("image").value = data.data.url;
+                document.getElementById("imagePreview").src = data.data.url;
+                updateImageSize();
             } catch (error) {
                 alert("Failed to upload image. Check API key and connection.");
             }
