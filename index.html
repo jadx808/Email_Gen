@@ -1,9 +1,122 @@
-   <h3>Signature Preview:</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back Nine Golf Email Signature Generator</title>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+            background-color: transparent;
+        }
+        label {
+            display: block;
+            margin-top: 4px;
+            font-weight: bold;
+            text-align: left;
+            font-size: 13px;
+        }
+        input, select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 2px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+        button {
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #99CA3C;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #88B92E;
+        }
+        .signature-box {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            text-align: left;
+        }
+        .image-preview {
+            display: block;
+            margin: auto;
+            border-radius: 50%;
+            object-fit: cover;
+            width: 180px;
+            height: 180px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        .info-table td {
+            padding: 4px;
+            vertical-align: middle;
+            white-space: nowrap;
+            line-height: 1.1;
+        }
+        .info-table img {
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Back Nine Golf Email Signature Generator</h2>
+    <p>Fill in your details below to generate your email signature.</p>
+    
+    <label for="name">Full Name</label>
+    <input type="text" id="name" value="Your Name" oninput="updatePreview()">
+
+    <label for="title">Job Title</label>
+    <input type="text" id="title" value="Your Title" oninput="updatePreview()">
+
+    <label for="mobile">Mobile Number</label>
+    <input type="tel" id="mobile" oninput="updatePreview()">
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" oninput="updatePreview()">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" oninput="updatePreview()">
+
+    <label for="website">Website</label>
+    <input type="url" id="website" oninput="updatePreview()">
+
+    <label for="address">Address</label>
+    <input type="text" id="address" oninput="updatePreview()">
+
+    <label for="image">Profile Image URL</label>
+    <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
+    <input type="file" id="imageUpload" accept="image/*" onchange="uploadImage()">
+
+    <label for="imageSize">Image Size</label>
+    <input type="range" id="imageSize" min="50" max="200" value="180" oninput="updateImageSize()">
+    <span id="imageSizeValue">180px</span>
+
+    <div class="btn-group">
+        <button onclick="copySignature()">Copy Signature</button>
+    </div>
+
+    <h3>Signature Preview:</h3>
     <div id="preview-box" class="signature-box">
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
-                    <img id="imagePreview" class="image-preview" src="https://iili.io/3qJnYqx.png" alt="Profile Image" style="width: 120px; height: 120px;">
+                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image">
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
                     <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
@@ -15,8 +128,6 @@
     </div>
 
     <script>
-        const API_KEY = "f77ae13d7081299400e095b020a1dcd5";
-
         function updateImageSize() {
             let size = document.getElementById("imageSize").value + "px";
             let img = document.getElementById("imagePreview");
@@ -25,45 +136,35 @@
             document.getElementById("imageSizeValue").textContent = size;
         }
 
+        function updatePreview() {
+            document.getElementById("previewName").textContent = document.getElementById("name").value;
+            document.getElementById("previewTitle").textContent = document.getElementById("title").value;
+        }
+
         async function uploadImage() {
             const file = document.getElementById("imageUpload").files[0];
             if (!file) return;
             
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async function(event) {
-                const img = new Image();
-                img.src = event.target.result;
-                
-                img.onload = async function() {
-                    const maxSize = 200;
-                    const canvas = document.createElement("canvas");
-                    const ctx = canvas.getContext("2d");
-                    
-                    const scale = Math.min(maxSize / img.width, maxSize / img.height);
-                    const width = img.width * scale;
-                    const height = img.height * scale;
-                    
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    canvas.toBlob(async function(blob) {
-                        const formData = new FormData();
-                        formData.append("image", blob, "resized.png");
-                        formData.append("key", API_KEY);
-                        
-                        try {
-                            const response = await fetch("https://api.imgbb.com/1/upload", { method: "POST", body: formData });
-                            const data = await response.json();
-                            document.getElementById("image").value = data.data.url;
-                            document.getElementById("imagePreview").src = data.data.url;
-                        } catch (error) {
-                            alert("Failed to upload image. Check API key and connection.");
-                        }
-                    }, "image/png");
-                };
-            };
+            const formData = new FormData();
+            formData.append("image", file);
+            formData.append("key", "f77ae13d7081299400e095b020a1dcd5");
+            
+            try {
+                const response = await fetch("https://api.imgbb.com/1/upload", {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById("image").value = data.data.url;
+                    document.getElementById("imagePreview").src = data.data.url;
+                    updateImageSize();
+                } else {
+                    alert("Image upload failed. Please try again.");
+                }
+            } catch (error) {
+                alert("Failed to upload image. Check API key and connection.");
+            }
         }
     </script>
 </body>
