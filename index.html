@@ -51,7 +51,7 @@
             display: block;
             margin: auto;
             border-radius: 50%;
-            object-fit: contain;
+            object-fit: cover;
             width: 180px;
             height: 180px;
         }
@@ -110,7 +110,7 @@
         <table style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <tr>
                 <td style="padding: 10px; text-align: center;">
-                    <img id="imagePreview" class="image-preview" src="https://iili.io/2yOuSp4.png" alt="Profile Image">
+                    <img id="imagePreview" class="image-preview" src="https://i.ibb.co/QjzTpcVh/595ca0e4ab89.png" alt="Profile Image">
                 </td>
                 <td style="padding: 10px; border-left: 2px solid #99CA3C; text-align: left;">
                     <p id="previewName" style="font-size: 17px; font-weight: bold; margin: 0;">Your Name</p>
@@ -122,35 +122,9 @@
     </div>
 
     <script>
-        function updateImageSize() {
-            let size = document.getElementById("imageSize").value + "px";
-            let img = document.getElementById("imagePreview");
-            img.style.width = size;
-            img.style.height = size;
-            document.getElementById("imageSizeValue").textContent = size;
-        }
-
         function updatePreview() {
             document.getElementById("previewName").textContent = document.getElementById("name").value;
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
-
-            const contactInfo = [
-                { icon: "https://cdn-icons-png.flaticon.com/128/455/455705.png", value: document.getElementById("mobile").value },
-                { icon: "https://cdn-icons-png.flaticon.com/128/3917/3917144.png", value: document.getElementById("phone").value },
-                { icon: "https://cdn-icons-png.flaticon.com/128/3916/3916632.png", value: document.getElementById("email").value },
-                { icon: "https://cdn-icons-png.flaticon.com/128/3917/3917571.png", value: document.getElementById("website").value },
-                { icon: "https://cdn-icons-png.flaticon.com/128/3916/3916874.png", value: document.getElementById("address").value }
-            ];
-
-            const contactTable = document.getElementById("contactInfo");
-            contactTable.innerHTML = "";
-
-            contactInfo.forEach(info => {
-                if (info.value) {
-                    const row = contactTable.insertRow();
-                    row.innerHTML = `<td><img src="${info.icon}" width="16" height="16" style="vertical-align: middle; margin-right: 6px;"></td><td>${info.value}</td>`;
-                }
-            });
 
             const imageUrl = document.getElementById("image").value;
             document.getElementById("imagePreview").src = imageUrl;
