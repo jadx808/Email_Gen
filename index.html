@@ -71,6 +71,7 @@
 <body>
     <h2>Back Nine Golf Email Signature Generator</h2>
     <p>Fill in your details below to generate your email signature.</p>
+
     <label for="name">Full Name</label>
     <input type="text" id="name" value="Your Name" oninput="updatePreview()">
 
@@ -94,6 +95,7 @@
 
     <label for="image">Profile Image URL</label>
     <input type="url" id="image" value="https://iili.io/2yOuSp4.png" oninput="updatePreview()">
+    <input type="file" id="imageUpload" accept="image/*" onchange="uploadImage()">
 
     <label for="imageSize">Image Size</label>
     <input type="range" id="imageSize" min="50" max="200" value="180" oninput="updateImageSize()">
@@ -133,25 +135,20 @@
             document.getElementById("previewTitle").textContent = document.getElementById("title").value;
 
             const contactInfo = [
-                { id: "mobile", icon: "📱" },
-                { id: "phone", icon: "☎️" },
-                { id: "email", icon: "✉️" },
-                { id: "website", icon: "🌐" },
-                { id: "address", icon: "🏠" }
+                { icon: "https://cdn-icons-png.flaticon.com/128/455/455705.png", value: document.getElementById("mobile").value },
+                { icon: "https://cdn-icons-png.flaticon.com/128/3917/3917144.png", value: document.getElementById("phone").value },
+                { icon: "https://cdn-icons-png.flaticon.com/128/3916/3916632.png", value: document.getElementById("email").value },
+                { icon: "https://cdn-icons-png.flaticon.com/128/3917/3917571.png", value: document.getElementById("website").value },
+                { icon: "https://cdn-icons-png.flaticon.com/128/3916/3916874.png", value: document.getElementById("address").value }
             ];
 
             const contactTable = document.getElementById("contactInfo");
             contactTable.innerHTML = "";
 
             contactInfo.forEach(info => {
-                const value = document.getElementById(info.id).value;
-                if (value) {
+                if (info.value) {
                     const row = contactTable.insertRow();
-                    const cellIcon = row.insertCell(0);
-                    const cellValue = row.insertCell(1);
-
-                    cellIcon.textContent = info.icon;
-                    cellValue.textContent = value;
+                    row.innerHTML = `<td><img src="${info.icon}" width="16" height="16" style="vertical-align: middle; margin-right: 6px;"></td><td>${info.value}</td>`;
                 }
             });
 
